@@ -24,9 +24,7 @@ async def aceitar_cookies(page):
 
 async def preencher_documento(page, documento):
 
-    campo_documento = await page.select(
-        'input[aria-label="CPF ou CNPJ do requerente"]'
-    )
+    campo_documento = await page.select('input[aria-label="CPF ou CNPJ do requerente"]')
 
     await campo_documento.send_keys(documento)
 
@@ -37,9 +35,7 @@ async def preencher_documento(page, documento):
 
 async def clicar_botao_emitir(page):
 
-    botao_emitir = await page.select(
-        'button[type="submit"]'
-    )
+    botao_emitir = await page.select('button[type="submit"]')
 
     await botao_emitir.click()
 
@@ -48,15 +44,13 @@ async def clicar_botao_emitir(page):
     print("Botão emitir clicado com sucesso!")
 
 
-async def abrir_pagina_sefaz():
+async def abrir_pagina_sefaz(documento):
 
     browser = await uc.start()
 
     page = await browser.get(URL_SEFAZ)
 
     await page.sleep(5)
-
-    documento = "13316414000176"
 
     await aceitar_cookies(page)
 
@@ -74,7 +68,7 @@ async def abrir_pagina_sefaz():
     caminho_pdf = None
 
     if resultado["status"] == "sucesso":
-        
+
         await baixar_pdf(page)
 
         caminho_pdf = mover_pdf_mais_recente(documento)
@@ -83,48 +77,42 @@ async def abrir_pagina_sefaz():
         "documento": documento,
         "status": resultado["status"],
         "mensagem": resultado["mensagem"],
-        "caminho_pdf": caminho_pdf
+        "caminho_pdf": caminho_pdf,
     }
 
     gerar_relatorio_emissao([registro])
 
     print("Página da SEFAZ aberta com sucesso!")
 
-    print ("URL atual: ", page.url)
+    print("URL atual: ", page.url)
 
-    browser.stop()
+    await browser.stop()
+
 
 async def verificar_resultado_emissao(page):
 
-    conteudo_pagina = await page.evaluate(
-        "document.body.innerText"
-    )
+    conteudo_pagina = await page.evaluate("document.body.innerText")
 
     print("DEBUG TEXTO DA PÁGINA:")
     print(conteudo_pagina)
-    
+
     if "CPF inválido" in conteudo_pagina:
-        return {
-            "status": "documento_invalido",
-            "mensagem": "CPF inválido informado."
-        }
-    
+        return {"status": "documento_invalido", "mensagem": "CPF inválido informado."}
+
     if "CNPJ inválido" in conteudo_pagina:
-        return {
-            "status": "documento_invalido",
-            "mensagem": "CNPJ inválido informado."
-        }
-    
+        return {"status": "documento_invalido", "mensagem": "CNPJ inválido informado."}
+
     if "Certidões recentes emitidas para o requerente" in conteudo_pagina:
         return {
             "status": "sucesso",
-            "mensagem": "Certidão encontrada para o documento informado."
+            "mensagem": "Certidão encontrada para o documento informado.",
         }
-    
+
     return {
         "status": "resultado_indefinido",
-        "mensagem": "Não foi possível identificar o resultado da emissão."
+        "mensagem": "Não foi possível identificar o resultado da emissão.",
     }
+
 
 async def baixar_pdf(page):
 
@@ -146,5 +134,7 @@ async def baixar_pdf(page):
 
     print("Botão de baixar PDF não encontrado.")
 
+
 if __name__ == "__main__":
-    asyncio.run(abrir_pagina_sefaz())
+    documento = input("Informe o CPF ou CNPJ: ")
+    asyncio.run(abrir_pagina_sefaz(documento))
