@@ -1,6 +1,8 @@
-from fastapi import FastAPI, Request
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+import asyncio
+
+from src.emissao_sefaz import abrir_pagina_sefaz
+from src.leitor_planilha import ler_documentos_planilha
+from src.relatorio import gerar_relatorio_emissao
 
 from src.utils import (
     limpar_documento,
@@ -13,23 +15,34 @@ def main():
 
     criar_pastas_necessarias()
 
-    documento = input("Por gentileza, informe o documento (CPF ou CNPJ): ")
+    documentos = ler_documentos_planilha("planilha_documentos.xlsx")
 
-    documento_limpo = limpar_documento(documento)
+    print("\n=== DOCUMENTOS ENCONTRADOS ===\n")
 
-    tipo = identificar_tipo_documento(documento)
+    registros = []
 
-    valido = validar_documento(documento)
+    for item in documentos:
 
-    print("\n === RESULTADO ===")
-    
-    print (f"Documento original: {documento}")
+        print(f"\nProcessando documento: {item['documento']}")
 
-    print (f"Documento limpo: {documento_limpo}")
+        if not item["valido"]:
 
-    print (f"Tipo do documento: {tipo}")
+            print("Documento inválido. Ignorand...")
 
-    print (f"Documento válido? {valido}")
+            registros.append({
+                "documento": item["documento"],
+                "status": "documento_invalido",
+                "mensagem": "Documento inválido na planilha.",
+                "caminho_pdf": None
+            })
+
+            continue
+
+        resultado = asyncio.run(
+            abrir_pagina_sefaz(item["documento"])
+        )
+
+        registros.append(resultado)
 
 if __name__ == "__main__":
     main()

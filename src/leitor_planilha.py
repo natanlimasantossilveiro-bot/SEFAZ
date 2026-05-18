@@ -57,9 +57,3 @@ def ler_documentos_planilha(caminho_planilha):
         )
 
     return documentos
-
-if __name__ == "__main__":
-    documentos = ler_documentos_planilha("planilha_documentos.xlsx")
-
-    for item in documentos:
-        print(item)
