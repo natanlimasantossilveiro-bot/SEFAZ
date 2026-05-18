@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+
+downloads/
+certidoes_emitidas/
+relatorios/
+uploads/
+evidencias/
+historico/
+
+.env
