@@ -13,7 +13,7 @@ async def salvar_evidencia(page, documento, status):
 
     await page.save_screenshot(caminho)
 
-    print("Evidência salva com sucesse!")
+    print("Evidência salva com sucesso!")
     print("Caminho: ", caminho)
 
     return caminho
