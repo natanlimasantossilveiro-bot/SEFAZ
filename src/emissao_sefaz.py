@@ -70,7 +70,12 @@ async def abrir_pagina_sefaz(documento):
 
         await baixar_pdf(page)
 
-        browser.stop()
+        try:
+
+            browser.stop()
+
+        except Exception:
+            pass
 
         await asyncio.sleep(3)
 
@@ -90,9 +95,17 @@ async def abrir_pagina_sefaz(documento):
     print("URL atual: ", page.url)
 
     if browser:
-        browser.stop()
+
+        try:
+
+            browser.stop()
+
+        except Exception:
+
+            pass
 
     return registro
+
 
 async def verificar_resultado_emissao(page):
 
