@@ -45,7 +45,7 @@ async def main():
     for registro in registros:
         print(registro)
 
-    print("\nGerando relatório consolidade...")
+    print("\nGerando relatório consolidado...")
 
     gerar_relatorio_emissao(registros)
 

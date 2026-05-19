@@ -70,7 +70,13 @@ async def abrir_pagina_sefaz(documento):
 
         await baixar_pdf(page)
 
+        browser.stop()
+
+        await asyncio.sleep(3)
+
         caminho_pdf = mover_pdf_mais_recente(documento)
+
+        browser = None
 
     registro = {
         "documento": documento,
@@ -83,7 +89,8 @@ async def abrir_pagina_sefaz(documento):
 
     print("URL atual: ", page.url)
 
-    browser.stop()
+    if browser:
+        browser.stop()
 
     return registro
 
@@ -124,9 +131,9 @@ async def baixar_pdf(page):
         if texto and "file_save" in texto:
             await botao.click()
 
-            await page.sleep(5)
-
             print("Download do PDF iniciado com sucesso!")
+
+            await page.sleep(15)
 
             return
 
