@@ -2,6 +2,7 @@ import asyncio
 import nodriver as uc
 
 from src.pdf_service import mover_pdf_mais_recente
+from src.evidencia_service import salvar_evidencia
 
 URL_SEFAZ = "https://cdwfazenda.paas.pr.gov.br/cdwportal/certidao/automatica"
 
@@ -61,6 +62,12 @@ async def abrir_pagina_sefaz(documento):
 
     resultado = await verificar_resultado_emissao(page)
 
+    caminho_evidencia = await salvar_evidencia(
+        page,
+        documento,
+        resultado["status"]
+    )
+
     print("Resultado da emissão: ")
     print(resultado)
 
@@ -88,6 +95,7 @@ async def abrir_pagina_sefaz(documento):
         "status": resultado["status"],
         "mensagem": resultado["mensagem"],
         "caminho_pdf": caminho_pdf,
+        "caminho_evidencia": caminho_evidencia,
     }
 
     print("Página da SEFAZ aberta com sucesso!")

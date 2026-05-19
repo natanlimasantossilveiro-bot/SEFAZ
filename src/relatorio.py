@@ -14,11 +14,12 @@ def gerar_relatorio_emissao(registros):
         nome_arquivo
     )
 
-    colunas= [
+    colunas = [
         "documento",
         "status",
         "mensagem",
-        "caminho_pdf"
+        "caminho_pdf",
+        "caminho_evidencia"
     ]
 
     with open(caminho_relatorio, "w", newline="", encoding="utf-8-sig") as arquivo_csv:
