@@ -1,4 +1,5 @@
 import asyncio
+import random
 
 from src.emissao_sefaz import abrir_pagina_sefaz
 from src.leitor_planilha import ler_documentos_planilha
@@ -40,9 +41,13 @@ async def main():
 
         registros.append(resultado)
 
-        print("Aguardando antes da próxima emissão...")
+        tempo_espera = random.randint(8, 15)
 
-        await asyncio.sleep(8)
+        print(
+            f"Aguardando {tempo_espera} segundos antes da próxima emissão..."
+        )
+
+        await asyncio.sleep(tempo_espera)
 
     print("\n=== RESULTADOS FINAIS ===\n")
 
