@@ -5,9 +5,6 @@ from src.leitor_planilha import ler_documentos_planilha
 from src.relatorio import gerar_relatorio_emissao
 
 from src.utils import (
-    limpar_documento,
-    identificar_tipo_documento,
-    validar_documento,
     criar_pastas_necessarias
 )
 
@@ -27,7 +24,7 @@ def main():
 
         if not item["valido"]:
 
-            print("Documento inválido. Ignorand...")
+            print("Documento inválido. Ignorando...")
 
             registros.append({
                 "documento": item["documento"],
@@ -43,6 +40,11 @@ def main():
         )
 
         registros.append(resultado)
+
+    print("\n=== RESULTADOS FINAIS ===\n")
+
+    for registro in registros:
+        print(registro)
 
 if __name__ == "__main__":
     main()

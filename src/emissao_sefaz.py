@@ -86,8 +86,9 @@ async def abrir_pagina_sefaz(documento):
 
     print("URL atual: ", page.url)
 
-    await browser.stop()
+    browser.stop()
 
+    return registro
 
 async def verificar_resultado_emissao(page):
 
