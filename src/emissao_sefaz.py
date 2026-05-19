@@ -2,7 +2,6 @@ import asyncio
 import nodriver as uc
 
 from src.pdf_service import mover_pdf_mais_recente
-from src.relatorio import gerar_relatorio_emissao
 
 URL_SEFAZ = "https://cdwfazenda.paas.pr.gov.br/cdwportal/certidao/automatica"
 
@@ -79,8 +78,6 @@ async def abrir_pagina_sefaz(documento):
         "mensagem": resultado["mensagem"],
         "caminho_pdf": caminho_pdf,
     }
-
-    gerar_relatorio_emissao([registro])
 
     print("Página da SEFAZ aberta com sucesso!")
 

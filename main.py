@@ -4,11 +4,10 @@ from src.emissao_sefaz import abrir_pagina_sefaz
 from src.leitor_planilha import ler_documentos_planilha
 from src.relatorio import gerar_relatorio_emissao
 
-from src.utils import (
-    criar_pastas_necessarias
-)
+from src.utils import criar_pastas_necessarias
 
-def main():
+
+async def main():
 
     criar_pastas_necessarias()
 
@@ -26,18 +25,18 @@ def main():
 
             print("Documento inválido. Ignorando...")
 
-            registros.append({
-                "documento": item["documento"],
-                "status": "documento_invalido",
-                "mensagem": "Documento inválido na planilha.",
-                "caminho_pdf": None
-            })
+            registros.append(
+                {
+                    "documento": item["documento"],
+                    "status": "documento_invalido",
+                    "mensagem": "Documento inválido na planilha.",
+                    "caminho_pdf": None,
+                }
+            )
 
             continue
 
-        resultado = asyncio.run(
-            abrir_pagina_sefaz(item["documento"])
-        )
+        resultado = await abrir_pagina_sefaz(item["documento"])
 
         registros.append(resultado)
 
@@ -46,5 +45,10 @@ def main():
     for registro in registros:
         print(registro)
 
+    print("\nGerando relatório consolidade...")
+
+    gerar_relatorio_emissao(registros)
+
+
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
