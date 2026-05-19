@@ -42,3 +42,21 @@ def salvar_historico(registros):
             escritor.writerow(linha)
 
     print("Histórico atualizado com sucesso!")
+
+def listar_historico():
+    if not os.path.exists(CAMINHO_HISTORICO):
+        print("Nenhum histórico encontrado.")
+        return []
+    
+    registros = []
+    
+    with open(CAMINHO_HISTORICO, "r", newline="", encoding="utf-8-sig") as arquivo_csv:
+        leitor = csv.DictReader(
+            arquivo_csv,
+            delimiter=";"
+        )
+
+        for linha in leitor:
+            registros.append(linha)
+
+    return registros

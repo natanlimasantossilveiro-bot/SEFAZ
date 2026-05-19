@@ -4,7 +4,7 @@ import random
 from src.emissao_sefaz import abrir_pagina_sefaz
 from src.leitor_planilha import ler_documentos_planilha
 from src.relatorio import gerar_relatorio_emissao
-from src.historico_service import salvar_historico
+from src.historico_service import salvar_historico, listar_historico
 
 from src.utils import criar_pastas_necessarias
 
@@ -13,7 +13,8 @@ def exibir_menu():
     print("\n=== AUTOMAÇÃO SEFAZ ===")
     print("1- Emitir certidão manual")
     print("2- Emitir certidões por planilha")
-    print("3- Sair")
+    print("3- Consultar histórico")
+    print("4- Sair")
 
     return input("\nEscolha uma opção:")
 
@@ -90,6 +91,24 @@ async def main():
             salvar_historico(registros)
 
         elif opcao == "3":
+            
+            historico = listar_historico()
+
+            print("\n=== HISTÓRICO DE EMISSÕES ===\n")
+
+            if not historico:
+                print("Nenhum registro encontrado.")
+
+            else:
+                for registro in historico[-10:]:
+                    print(
+                        f"{registro['data_hora']} | "
+                        f"{registro['documento']} | "
+                        f"{registro['status']} | "
+                        f"{registro['mensagem']}"
+                    )
+
+        elif opcao == "4":
 
             print("Sistema encerrado.")
             break
