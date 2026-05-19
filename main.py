@@ -40,6 +40,10 @@ async def main():
 
         registros.append(resultado)
 
+        print("Aguardando antes da próxima emissão...")
+
+        await asyncio.sleep(8)
+
     print("\n=== RESULTADOS FINAIS ===\n")
 
     for registro in registros:
