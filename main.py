@@ -20,75 +20,78 @@ async def main():
 
     criar_pastas_necessarias()
 
-    opcao = exibir_menu()
+    while True:
 
-    if opcao == "1":
+        opcao = exibir_menu()
 
-        documento = input("Informe o CPF ou CNPJ: ")
+        if opcao == "1":
 
-        resultado = await abrir_pagina_sefaz(documento)
+            documento = input("Informe o CPF ou CNPJ: ")
 
-        print("\n=== RESULTADO DA EMISSÃO ===\n")
-        print(resultado)
+            resultado = await abrir_pagina_sefaz(documento)
 
-        gerar_relatorio_emissao([resultado])
+            print("\n=== RESULTADO DA EMISSÃO ===\n")
+            print(resultado)
 
-    elif opcao == "2":
+            gerar_relatorio_emissao([resultado])
 
-        documentos = ler_documentos_planilha("planilha_documentos.xlsx")
+        elif opcao == "2":
 
-        print("\n=== DOCUMENTOS ENCONTRADOS ===\n")
+            documentos = ler_documentos_planilha("planilha_documentos.xlsx")
 
-        registros = []
+            print("\n=== DOCUMENTOS ENCONTRADOS ===\n")
 
-        for item in documentos:
+            registros = []
 
-            print(f"\nProcessando documento: {item['documento']}")
+            for item in documentos:
 
-            if not item["valido"]:
+                print(f"\nProcessando documento: {item['documento']}")
 
-                print("Documento inválido. Ignorando...")
+                if not item["valido"]:
 
-                registros.append(
-                    {
-                        "documento": item["documento"],
-                        "status": "documento_invalido",
-                        "mensagem": "Documento inválido na planilha.",
-                        "caminho_pdf": None,
-                        "caminho_evidencia": None
-                    }
+                    print("Documento inválido. Ignorando...")
+
+                    registros.append(
+                        {
+                            "documento": item["documento"],
+                            "status": "documento_invalido",
+                            "mensagem": "Documento inválido na planilha.",
+                            "caminho_pdf": None,
+                            "caminho_evidencia": None,
+                        }
+                    )
+
+                    continue
+
+                resultado = await abrir_pagina_sefaz(item["documento"])
+
+                registros.append(resultado)
+
+                tempo_espera = random.randint(8, 15)
+
+                print(
+                    f"Aguardando {tempo_espera} segundos antes da próxima emissão..."
                 )
 
-                continue
+                await asyncio.sleep(tempo_espera)
 
-            resultado = await abrir_pagina_sefaz(item["documento"])
+            print("\n=== RESULTADOS FINAIS ===\n")
 
-            registros.append(resultado)
+            for registro in registros:
+                print(registro)
 
-            tempo_espera = random.randint(8, 15)
+            print("\nGerando relatório consolidado...")
 
-            print(
-                f"Aguardando {tempo_espera} segundos antes da próxima emissão..."
-            )
+            gerar_relatorio_emissao(registros)
 
-            await asyncio.sleep(tempo_espera)
+        elif opcao == "3":
 
-        print("\n=== RESULTADOS FINAIS ===\n")
+            print("Sistema encerrado.")
+            break
 
-        for registro in registros:
-            print(registro)
+        else:
 
-        print("\nGerando relatório consolidado...")
-
-        gerar_relatorio_emissao(registros)
-
-    elif opcao == "3":
-
-        print("Sistema encerrado.")
-
-    else:
-
-        print("Opção inválida.")
+            print("Opção inválida.")
 
 
 if __name__ == "__main__":
