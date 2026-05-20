@@ -1,5 +1,6 @@
 import asyncio
 import random
+import os
 
 from src.emissao_sefaz import abrir_pagina_sefaz
 from src.leitor_planilha import ler_documentos_planilha
@@ -14,7 +15,8 @@ def exibir_menu():
     print("1- Emitir certidão manual")
     print("2- Emitir certidões por planilha")
     print("3- Consultar histórico")
-    print("4- Sair")
+    print("4- Abrir pasta de PDFs")
+    print("5- Sair")
 
     return input("\nEscolha uma opção:")
 
@@ -109,6 +111,10 @@ async def main():
                     )
 
         elif opcao == "4":
+
+            os.startfile("certidoes_emitidas")
+
+        elif opcao == "5":
 
             print("Sistema encerrado.")
             break
