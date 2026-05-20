@@ -2,8 +2,7 @@ import os
 import re
 
 from datetime import datetime
-
-DEBUG = True
+from src.config import DEBUG
 
 def agora_formatado():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")

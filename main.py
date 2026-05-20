@@ -6,6 +6,13 @@ from src.emissao_sefaz import abrir_pagina_sefaz
 from src.leitor_planilha import ler_documentos_planilha
 from src.relatorio import gerar_relatorio_emissao
 from src.historico_service import salvar_historico, listar_historico
+from src.config import (
+    TIMEOUT_EMISSAO,
+    TEMPO_ESPERA_MINIMO,
+    TEMPO_ESPERA_MAXIMO,
+    TEMPO_RETRY_MINIMO,
+    TEMPO_RETRY_MAXIMO,
+)
 
 from src.utils import (
     criar_pastas_necessarias,
@@ -38,7 +45,7 @@ async def emitir_com_retry(documento, total_tentativas=3):
 
             resultado = await asyncio.wait_for(
                 abrir_pagina_sefaz(documento),
-                timeout=60
+                timeout=TIMEOUT_EMISSAO
             )
 
             return resultado
@@ -47,7 +54,7 @@ async def emitir_com_retry(documento, total_tentativas=3):
             log_erro(f"Erro na tentativa {tentativa} para o documento {documento}: {erro}")
 
             if tentativa < total_tentativas:
-                tempo_espera = random.randint(10, 20)
+                tempo_espera = random.randint(TEMPO_RETRY_MINIMO, TEMPO_RETRY_MAXIMO)
 
                 log_alerta(f"Aguardando {tempo_espera} segundos antes de tentar novamente...")
 
@@ -114,7 +121,7 @@ async def main():
 
                 registros.append(resultado)
 
-                tempo_espera = random.randint(8, 15)
+                tempo_espera = random.randint(TEMPO_ESPERA_MINIMO, TEMPO_ESPERA_MAXIMO)
 
                 log_info(f"Aguardando {tempo_espera} segundos antes da próxima emissão...")
 

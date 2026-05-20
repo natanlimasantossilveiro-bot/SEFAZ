@@ -5,7 +5,16 @@ from src.pdf_service import mover_pdf_mais_recente
 from src.evidencia_service import salvar_evidencia
 from src.utils import log_info, log_sucesso, log_alerta, log_erro, log_debug
 
-URL_SEFAZ = "https://cdwfazenda.paas.pr.gov.br/cdwportal/certidao/automatica"
+from src.config import (
+    URL_SEFAZ,
+    TEMPO_CARREGAMENTO_PAGINA,
+    TEMPO_APOS_COOKIES,
+    TEMPO_APOS_PREENCHER_DOCUMENTO,
+    TEMPO_APOS_CLICAR_EMITIR,
+    TEMPO_ANTES_BAIXAR_PDF,
+    TEMPO_AGUARDAR_DOWNLOAD_PDF,
+    TEMPO_APOS_FECHAR_BROWSER,
+)
 
 
 async def aceitar_cookies(page):
@@ -15,7 +24,7 @@ async def aceitar_cookies(page):
 
         await botao_cookies.click()
 
-        await page.sleep(2)
+        await page.sleep(TEMPO_APOS_COOKIES)
 
         log_sucesso("Cookies aceitos com sucesso!")
 
@@ -29,7 +38,7 @@ async def preencher_documento(page, documento):
 
     await campo_documento.send_keys(documento)
 
-    await page.sleep(1)
+    await page.sleep(TEMPO_APOS_PREENCHER_DOCUMENTO)
 
     log_sucesso("Documento preenchido com sucesso!")
 
@@ -40,7 +49,7 @@ async def clicar_botao_emitir(page):
 
     await botao_emitir.click()
 
-    await page.sleep(5)
+    await page.sleep(TEMPO_APOS_CLICAR_EMITIR)
 
     log_sucesso("Botão emitir clicado com sucesso!")
 
@@ -51,7 +60,7 @@ async def abrir_pagina_sefaz(documento):
 
     page = await browser.get(URL_SEFAZ)
 
-    await page.sleep(5)
+    await page.sleep(TEMPO_CARREGAMENTO_PAGINA)
 
     await aceitar_cookies(page)
 
@@ -84,7 +93,7 @@ async def abrir_pagina_sefaz(documento):
         except Exception:
             pass
 
-        await asyncio.sleep(3)
+        await asyncio.sleep(TEMPO_APOS_FECHAR_BROWSER)
 
         caminho_pdf = mover_pdf_mais_recente(documento)
 
@@ -148,7 +157,7 @@ async def verificar_resultado_emissao(page):
 
 async def baixar_pdf(page):
 
-    await page.sleep(3)
+    await page.sleep(TEMPO_ANTES_BAIXAR_PDF)
 
     botoes = await page.select_all("button")
 
@@ -160,7 +169,7 @@ async def baixar_pdf(page):
 
             log_sucesso("Download do PDF iniciado com sucesso!")
 
-            await page.sleep(15)
+            await page.sleep(TEMPO_AGUARDAR_DOWNLOAD_PDF)
 
             return
 
