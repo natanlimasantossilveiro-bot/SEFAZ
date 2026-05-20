@@ -9,6 +9,7 @@ from src.historico_service import salvar_historico, listar_historico
 
 from src.utils import criar_pastas_necessarias
 
+
 def exibir_menu():
 
     print("\n=== AUTOMAÇÃO SEFAZ ===")
@@ -16,9 +17,12 @@ def exibir_menu():
     print("2- Emitir certidões por planilha")
     print("3- Consultar histórico")
     print("4- Abrir pasta de PDFs")
-    print("5- Sair")
+    print("5- Abrir pasta de relatórios")
+    print("6- Abrir pasta de evidências")
+    print("7- Sair")
 
     return input("\nEscolha uma opção:")
+
 
 async def main():
 
@@ -75,9 +79,7 @@ async def main():
 
                 tempo_espera = random.randint(8, 15)
 
-                print(
-                    f"Aguardando {tempo_espera} segundos antes da próxima emissão..."
-                )
+                print(f"Aguardando {tempo_espera} segundos antes da próxima emissão...")
 
                 await asyncio.sleep(tempo_espera)
 
@@ -93,7 +95,7 @@ async def main():
             salvar_historico(registros)
 
         elif opcao == "3":
-            
+
             historico = listar_historico()
 
             print("\n=== HISTÓRICO DE EMISSÕES ===\n")
@@ -116,6 +118,14 @@ async def main():
 
         elif opcao == "5":
 
+            os.startfile("relatorios")
+
+        elif opcao == "6":
+
+            os.startfile("evidencias")
+
+        elif opcao == "7":
+
             print("Sistema encerrado.")
             break
 
@@ -123,6 +133,5 @@ async def main():
 
             print("Opção inválida.")
 
-
 if __name__ == "__main__":
-    asyncio.run(main())
+        asyncio.run(main())
