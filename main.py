@@ -23,6 +23,34 @@ def exibir_menu():
 
     return input("\nEscolha uma opção:")
 
+async def emitir_com_retry(documento, total_tentativas=3):
+
+    for tentativa in range(1, total_tentativas + 1):
+
+        try:
+            print(f"Tentativa {tentativa}/{total_tentativas} para o documento {documento}")
+
+            resultado = await abrir_pagina_sefaz(documento)
+
+            return resultado
+        
+        except Exception as erro:
+            print(f"Erro na tentativa {tentativa} para o documento {documento}: {erro}")
+
+            if tentativa < total_tentativas:
+                tempo_espera = random.randint(10, 20)
+
+                print(f"Aguardando {tempo_espera} segundos antes de tentar novamente...")
+
+                await asyncio.sleep(tempo_espera)
+
+    return {
+        "documento": documento,
+        "status": "erro_execucao",
+        "mensagem": f"Falha após {total_tentativas} tentativas.",
+        "caminho_pdf": None,
+        "caminho_evidencia": None,
+    }
 
 async def main():
 
@@ -36,7 +64,7 @@ async def main():
 
             documento = input("Informe o CPF ou CNPJ: ")
 
-            resultado = await abrir_pagina_sefaz(documento)
+            resultado = await emitir_com_retry(documento)
 
             print("\n=== RESULTADO DA EMISSÃO ===\n")
             print(resultado)
@@ -73,7 +101,7 @@ async def main():
 
                     continue
 
-                resultado = await abrir_pagina_sefaz(item["documento"])
+                resultado = await emitir_com_retry(item["documento"])
 
                 registros.append(resultado)
 
@@ -134,4 +162,4 @@ async def main():
             print("Opção inválida.")
 
 if __name__ == "__main__":
-        asyncio.run(main())
+    asyncio.run(main())
