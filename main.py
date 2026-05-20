@@ -30,7 +30,10 @@ async def emitir_com_retry(documento, total_tentativas=3):
         try:
             print(f"Tentativa {tentativa}/{total_tentativas} para o documento {documento}")
 
-            resultado = await abrir_pagina_sefaz(documento)
+            resultado = await asyncio.wait_for(
+                abrir_pagina_sefaz(documento),
+                timeout=60
+            )
 
             return resultado
         
