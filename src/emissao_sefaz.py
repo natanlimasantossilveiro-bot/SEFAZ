@@ -133,6 +133,12 @@ async def verificar_resultado_emissao(page):
             "status": "sucesso",
             "mensagem": "Certidão encontrada para o documento informado.",
         }
+    
+    if "seu computador ou rede pode estar enviando consultas automatizadas" in conteudo_pagina.lower():
+        return {
+            "status": "bloqueio_automacao",
+            "mensagem": "A SEFAZ identificou possível automação ou excesso de consultas."
+        }
 
     return {
         "status": "resultado_indefinido",
