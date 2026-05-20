@@ -3,6 +3,7 @@ import nodriver as uc
 
 from src.pdf_service import mover_pdf_mais_recente
 from src.evidencia_service import salvar_evidencia
+from src.utils import log_info, log_sucesso, log_alerta, log_erro
 
 URL_SEFAZ = "https://cdwfazenda.paas.pr.gov.br/cdwportal/certidao/automatica"
 
@@ -16,10 +17,10 @@ async def aceitar_cookies(page):
 
         await page.sleep(2)
 
-        print("Cookies aceitos com sucesso!")
+        log_sucesso("Cookies aceitos com sucesso!")
 
     except Exception:
-        print("Banner de cookies não encontrado ou já aceito.")
+        log_alerta("Banner de cookies não encontrado ou já aceito.")
 
 
 async def preencher_documento(page, documento):
@@ -30,7 +31,7 @@ async def preencher_documento(page, documento):
 
     await page.sleep(1)
 
-    print("Documento preenchido com sucesso!")
+    log_sucesso("Documento preenchido com sucesso!")
 
 
 async def clicar_botao_emitir(page):
@@ -41,7 +42,7 @@ async def clicar_botao_emitir(page):
 
     await page.sleep(5)
 
-    print("Botão emitir clicado com sucesso!")
+    log_sucesso("Botão emitir clicado com sucesso!")
 
 
 async def abrir_pagina_sefaz(documento):
@@ -58,7 +59,7 @@ async def abrir_pagina_sefaz(documento):
 
     await clicar_botao_emitir(page)
 
-    print("URL após emitir: ", page.url)
+    log_info(f"URL após emitir: {page.url}")
 
     resultado = await verificar_resultado_emissao(page)
 
@@ -68,8 +69,7 @@ async def abrir_pagina_sefaz(documento):
         resultado["status"]
     )
 
-    print("Resultado da emissão: ")
-    print(resultado)
+    log_info(f"Resultado da emissão: {resultado}")
 
     caminho_pdf = None
 
@@ -98,9 +98,9 @@ async def abrir_pagina_sefaz(documento):
         "caminho_evidencia": caminho_evidencia,
     }
 
-    print("Página da SEFAZ aberta com sucesso!")
+    log_sucesso("Página da SEFAZ aberta com sucesso!")
 
-    print("URL atual: ", page.url)
+    log_info(f"URL atual: {page.url}")
 
     if browser:
 
@@ -158,13 +158,13 @@ async def baixar_pdf(page):
         if texto and "file_save" in texto:
             await botao.click()
 
-            print("Download do PDF iniciado com sucesso!")
+            log_sucesso("Download do PDF iniciado com sucesso!")
 
             await page.sleep(15)
 
             return
 
-    print("Botão de baixar PDF não encontrado.")
+    log_alerta("Botão de baixar PDF não encontrado.")
 
 
 if __name__ == "__main__":
