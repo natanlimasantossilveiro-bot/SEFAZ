@@ -3,7 +3,7 @@ import nodriver as uc
 
 from src.pdf_service import mover_pdf_mais_recente
 from src.evidencia_service import salvar_evidencia
-from src.utils import log_info, log_sucesso, log_alerta, log_erro
+from src.utils import log_info, log_sucesso, log_alerta, log_erro, log_debug
 
 URL_SEFAZ = "https://cdwfazenda.paas.pr.gov.br/cdwportal/certidao/automatica"
 
@@ -119,8 +119,8 @@ async def verificar_resultado_emissao(page):
 
     conteudo_pagina = await page.evaluate("document.body.innerText")
 
-    print("DEBUG TEXTO DA PÁGINA:")
-    print(conteudo_pagina)
+    log_debug("DEBUG TEXTO DA PÁGINA:")
+    log_debug(conteudo_pagina)
 
     if "CPF inválido" in conteudo_pagina:
         return {"status": "documento_invalido", "mensagem": "CPF inválido informado."}

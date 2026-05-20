@@ -3,6 +3,7 @@ import re
 
 from datetime import datetime
 
+DEBUG = True
 
 def agora_formatado():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -68,3 +69,8 @@ def log_erro(mensagem):
 
 def log_alerta(mensagem):
     print(f"[ALERTA] {mensagem}")
+
+
+def log_debug(mensagem):
+    if DEBUG:
+        print(f"[DEBUG] {mensagem}")
