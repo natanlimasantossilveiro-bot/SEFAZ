@@ -52,3 +52,19 @@ def criar_pastas_necessarias():
 
     for pasta in pastas:
         os.makedirs(pasta, exist_ok=True)
+
+
+def log_info(mensagem):
+    print(f"[INFO] {mensagem}")
+
+
+def log_sucesso(mensagem):
+    print(f"[SUCESSO] {mensagem}")
+
+
+def log_erro(mensagem):
+    print(f"[ERRO] {mensagem}")
+
+
+def log_alerta(mensagem):
+    print(f"[ALERTA] {mensagem}")

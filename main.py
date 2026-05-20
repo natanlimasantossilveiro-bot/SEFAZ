@@ -7,7 +7,13 @@ from src.leitor_planilha import ler_documentos_planilha
 from src.relatorio import gerar_relatorio_emissao
 from src.historico_service import salvar_historico, listar_historico
 
-from src.utils import criar_pastas_necessarias
+from src.utils import (
+    criar_pastas_necessarias,
+    log_info,
+    log_sucesso,
+    log_erro,
+    log_alerta,
+)
 
 
 def exibir_menu():
@@ -28,7 +34,7 @@ async def emitir_com_retry(documento, total_tentativas=3):
     for tentativa in range(1, total_tentativas + 1):
 
         try:
-            print(f"Tentativa {tentativa}/{total_tentativas} para o documento {documento}")
+            log_info(f"Tentativa {tentativa}/{total_tentativas} para o documento {documento}")
 
             resultado = await asyncio.wait_for(
                 abrir_pagina_sefaz(documento),
@@ -38,12 +44,12 @@ async def emitir_com_retry(documento, total_tentativas=3):
             return resultado
         
         except Exception as erro:
-            print(f"Erro na tentativa {tentativa} para o documento {documento}: {erro}")
+            log_erro(f"Erro na tentativa {tentativa} para o documento {documento}: {erro}")
 
             if tentativa < total_tentativas:
                 tempo_espera = random.randint(10, 20)
 
-                print(f"Aguardando {tempo_espera} segundos antes de tentar novamente...")
+                log_alerta(f"Aguardando {tempo_espera} segundos antes de tentar novamente...")
 
                 await asyncio.sleep(tempo_espera)
 
@@ -90,7 +96,7 @@ async def main():
 
                 if not item["valido"]:
 
-                    print("Documento inválido. Ignorando...")
+                    log_alerta("Documento inválido. Ignorando...")
 
                     registros.append(
                         {
@@ -110,7 +116,7 @@ async def main():
 
                 tempo_espera = random.randint(8, 15)
 
-                print(f"Aguardando {tempo_espera} segundos antes da próxima emissão...")
+                log_info(f"Aguardando {tempo_espera} segundos antes da próxima emissão...")
 
                 await asyncio.sleep(tempo_espera)
 
@@ -119,7 +125,7 @@ async def main():
             for registro in registros:
                 print(registro)
 
-            print("\nGerando relatório consolidado...")
+            log_info("Gerando relatório consolidado...")
 
             gerar_relatorio_emissao(registros)
 
@@ -157,12 +163,12 @@ async def main():
 
         elif opcao == "7":
 
-            print("Sistema encerrado.")
+            log_sucesso("Sistema encerrado.")
             break
 
         else:
 
-            print("Opção inválida.")
+            log_erro("Opção inválida.")
 
 if __name__ == "__main__":
     asyncio.run(main())
