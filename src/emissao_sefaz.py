@@ -15,6 +15,10 @@ from src.config import (
     TEMPO_ANTES_BAIXAR_PDF,
     TEMPO_AGUARDAR_DOWNLOAD_PDF,
     TEMPO_APOS_FECHAR_BROWSER,
+    TEMPO_ANTES_DIGITAR_MINIMO,
+    TEMPO_ANTES_DIGITAR_MAXIMO,
+    TEMPO_ENTRE_TECLAS_MINIMO,
+    TEMPO_ENTRE_TECLAS_MAXIMO,
 )
 
 
@@ -37,11 +41,15 @@ async def preencher_documento(page, documento):
 
     campo_documento = await page.select('input[aria-label="CPF ou CNPJ do requerente"]')
 
-    await page.sleep(random.uniform(1.5, 3.5))
+    await page.sleep(
+        random.uniform(TEMPO_ANTES_DIGITAR_MINIMO, TEMPO_ANTES_DIGITAR_MAXIMO)
+    )
 
     for caractere in documento:
         await campo_documento.send_keys(caractere)
-        await page.sleep(random.uniform(0.1, 0.4))
+        await page.sleep(
+            random.uniform(TEMPO_ENTRE_TECLAS_MINIMO, TEMPO_ENTRE_TECLAS_MAXIMO)
+        )
 
     await page.sleep(TEMPO_APOS_PREENCHER_DOCUMENTO)
 
