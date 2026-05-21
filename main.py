@@ -12,6 +12,7 @@ from src.config import (
     TEMPO_ESPERA_MAXIMO,
     TEMPO_RETRY_MINIMO,
     TEMPO_RETRY_MAXIMO,
+    TEMPO_PAUSA_BLOQUEIO,
 )
 
 from src.utils import (
@@ -123,6 +124,10 @@ async def main():
                 resultado = await emitir_com_retry(item["documento"])
 
                 registros.append(resultado)
+
+                if resultado["status"] == "bloqueio_automacao":
+                    log_alerta("Bloqueio detectado. Pausando o lote antes de continuar.")
+                    await asyncio.sleep(TEMPO_PAUSA_BLOQUEIO)
 
                 tempo_espera = random.randint(TEMPO_ESPERA_MINIMO, TEMPO_ESPERA_MAXIMO)
 
