@@ -1,7 +1,7 @@
 import csv
 import os
 
-from src.utils import agora_formatado
+from src.utils import agora_formatado, limpar_documento
 
 CAMINHO_HISTORICO = os.path.join("historico", "historico_emissoes.csv")
 
@@ -60,3 +60,16 @@ def listar_historico():
             registros.append(linha)
 
     return registros
+
+def filtrar_historico_por_documento(documento):
+    documento_limpo = limpar_documento(documento)
+
+    historico = listar_historico()
+
+    registros_filtrados = []
+
+    for registro in historico:
+        if registro["documento"] == documento_limpo:
+            registros_filtrados.append(registro)
+
+    return registros_filtrados

@@ -5,7 +5,11 @@ import os
 from src.emissao_sefaz import abrir_pagina_sefaz
 from src.leitor_planilha import ler_documentos_planilha
 from src.relatorio import gerar_relatorio_emissao
-from src.historico_service import salvar_historico, listar_historico
+from src.historico_service import (
+    salvar_historico,
+    listar_historico,
+    filtrar_historico_por_documento,
+    )
 from src.config import (
     TIMEOUT_EMISSAO,
     TEMPO_ESPERA_MINIMO,
@@ -148,7 +152,23 @@ async def main():
 
         elif opcao == "3":
 
-            historico = listar_historico()
+            documento_busca = input(
+                "Informe um CPF/CNPJ para filtrar ou pressione ENTER para listar os últimos registros: "
+            )
+
+            if documento_busca.strip():
+                historico = filtrar_historico_por_documento(documento_busca)
+            else:
+                historico = listar_historico()
+
+            quantidade_texto = input(
+                "Quantos registros deseja exibir? Pressione ENTER para 10: "
+            )
+
+            if quantidade_texto.strip().isdigit():
+                quantidade = int(quantidade_texto)
+            else:
+                quantidade = 10
 
             print("\n=== HISTÓRICO DE EMISSÕES ===\n")
 
@@ -156,13 +176,19 @@ async def main():
                 print("Nenhum registro encontrado.")
 
             else:
-                for registro in historico[-10:]:
+                for registro in historico[-quantidade:]:
                     print(
-                        f"{registro['data_hora']} | "
+                        f"\n{registro['data_hora']} | "
                         f"{registro['documento']} | "
                         f"{registro['status']} | "
                         f"{registro['mensagem']}"
                     )
+
+                    if registro.get("caminho_pdf"):
+                        print(f"PDF: {registro['caminho_pdf']}")
+
+                    if registro.get("caminho_evidencia"):
+                        print(f"Evidência: {registro['caminho_evidencia']}")
 
         elif opcao == "4":
 
