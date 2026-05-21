@@ -48,6 +48,9 @@ async def emitir_com_retry(documento, total_tentativas=3):
                 timeout=TIMEOUT_EMISSAO
             )
 
+            if resultado["status"] == "bloqueio_automacao":
+                log_alerta("Bloqueio detectado pela SEFAZ. A emissão não será repetida agora.")
+
             return resultado
         
         except Exception as erro:

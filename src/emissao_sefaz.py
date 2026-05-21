@@ -1,5 +1,6 @@
 import asyncio
 import nodriver as uc
+import random
 
 from src.pdf_service import mover_pdf_mais_recente
 from src.evidencia_service import salvar_evidencia
@@ -36,7 +37,11 @@ async def preencher_documento(page, documento):
 
     campo_documento = await page.select('input[aria-label="CPF ou CNPJ do requerente"]')
 
-    await campo_documento.send_keys(documento)
+    await page.sleep(random.uniform(1.5, 3.5))
+
+    for caractere in documento:
+        await campo_documento.send_keys(caractere)
+        await page.sleep(random.uniform(0.1, 0.4))
 
     await page.sleep(TEMPO_APOS_PREENCHER_DOCUMENTO)
 
