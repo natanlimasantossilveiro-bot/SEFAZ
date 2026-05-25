@@ -187,6 +187,10 @@ async def emitir_manual():
     print("\n=== RESULTADO DA EMISSÃO ===\n")
     print(resultado)
 
+    if resultado["status"] == "bloqueio_automacao":
+        log_alerta("A SEFAZ bloqueou temporariamente as consultas.")
+        log_alerta("Recomenda-se aguardar alguns minutos antes de tentar novamente.")
+
     gerar_relatorio_emissao([resultado])
 
     salvar_historico([resultado])
