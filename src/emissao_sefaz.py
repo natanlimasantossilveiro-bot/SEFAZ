@@ -69,72 +69,86 @@ async def clicar_botao_emitir(page):
 
 async def abrir_pagina_sefaz(documento):
 
-    browser = await uc.start()
+    browser = None
+    page = None
+    
+    try:
+        browser = await uc.start()
 
-    page = await browser.get(URL_SEFAZ)
+        page = await browser.get(URL_SEFAZ)
 
-    await page.sleep(TEMPO_CARREGAMENTO_PAGINA)
+        await page.sleep(TEMPO_CARREGAMENTO_PAGINA)
 
-    await aceitar_cookies(page)
+        await aceitar_cookies(page)
 
-    await preencher_documento(page, documento)
+        await preencher_documento(page, documento)
 
-    await clicar_botao_emitir(page)
+        await clicar_botao_emitir(page)
 
-    log_info(f"URL após emitir: {page.url}")
+        log_info(f"URL após emitir: {page.url}")
 
-    resultado = await verificar_resultado_emissao(page)
+        resultado = await verificar_resultado_emissao(page)
 
-    caminho_evidencia = await salvar_evidencia(
-        page,
-        documento,
-        resultado["status"]
-    )
+        caminho_evidencia = await salvar_evidencia(
+            page,
+            documento,
+            resultado["status"]
+        )
 
-    log_info(f"Resultado da emissão: {resultado}")
+        log_info(f"Resultado da emissão: {resultado}")
 
-    caminho_pdf = None
+        caminho_pdf = None
+        
+        if resultado["status"] == "sucesso":
 
-    if resultado["status"] == "sucesso":
+            await baixar_pdf(page)
 
-        await baixar_pdf(page)
+            fechar_browser(browser)
 
-        try:
+            await asyncio.sleep(TEMPO_APOS_FECHAR_BROWSER)
 
-            browser.stop()
+            caminho_pdf = mover_pdf_mais_recente(documento)
 
-        except Exception:
-            pass
+            browser = None
 
-        await asyncio.sleep(TEMPO_APOS_FECHAR_BROWSER)
+        registro = {
+            "documento": documento,
+            "status": resultado["status"],
+            "mensagem": resultado["mensagem"],
+            "caminho_pdf": caminho_pdf,
+            "caminho_evidencia": caminho_evidencia,
+        }
 
-        caminho_pdf = mover_pdf_mais_recente(documento)
+        log_sucesso("Página da SEFAZ processada com sucesso!")
 
-        browser = None
+        if page:
+            log_info(f"URL atual: {page.url}")
 
-    registro = {
-        "documento": documento,
-        "status": resultado["status"],
-        "mensagem": resultado["mensagem"],
-        "caminho_pdf": caminho_pdf,
-        "caminho_evidencia": caminho_evidencia,
-    }
+        return registro
+    
+    except Exception as erro:
+        log_erro(f"Erro inesperado durante a emissão na SEFAZ: {erro}")
 
-    log_sucesso("Página da SEFAZ aberta com sucesso!")
+        return {
+            "documento": documento,
+            "status": "erro_inesperado",
+            "mensagem": "Ocorreu um erro inesperado durante a emissão.",
+            "caminho_pdf": None,
+            "caminho_evidencia": None,
+        }
+    
+    finally:
+        if browser:
+            fechar_browser(browser)
 
-    log_info(f"URL atual: {page.url}")
 
-    if browser:
+def fechar_browser(browser):
 
-        try:
+    try:
+        browser.stop()
 
-            browser.stop()
-
-        except Exception:
-
-            pass
-
-    return registro
+    except Exception:
+        pass
 
 
 async def verificar_resultado_emissao(page):
