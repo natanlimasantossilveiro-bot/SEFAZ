@@ -158,7 +158,14 @@ async def emitir_por_planilha():
         registros.append(resultado)
 
         if resultado["status"] == "bloqueio_automacao":
-            log_alerta("Bloqueio detectado. Pausando o lote antes de continuar.")
+            
+            minutos_pausa = TEMPO_PAUSA_BLOQUEIO // 60
+
+            log_alerta("Bloqueio detectado pela SEFAZ durante o lote.")
+            log_alerta(
+                f"O sistema ficará pausado por aproximadamente {minutos_pausa} minutos."
+            )
+
             await asyncio.sleep(TEMPO_PAUSA_BLOQUEIO)
 
         tempo_espera = random.randint(TEMPO_ESPERA_MINIMO, TEMPO_ESPERA_MAXIMO)
