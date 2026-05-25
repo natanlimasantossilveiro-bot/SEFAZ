@@ -5,6 +5,7 @@ import os
 from src.emissao_sefaz import abrir_pagina_sefaz
 from src.leitor_planilha import ler_documentos_planilha
 from src.relatorio import gerar_relatorio_emissao
+from src.menu_service import exibir_menu
 from src.historico_service import (
     salvar_historico,
     listar_historico,
@@ -28,20 +29,6 @@ from src.utils import (
     log_erro,
     log_alerta,
 )
-
-
-def exibir_menu():
-
-    print("\n=== AUTOMAÇÃO SEFAZ ===")
-    print("1- Emitir certidão manual")
-    print("2- Emitir certidões por planilha")
-    print("3- Consultar histórico")
-    print("4- Abrir pasta de PDFs")
-    print("5- Abrir pasta de relatórios")
-    print("6- Abrir pasta de evidências")
-    print("7- Sair")
-
-    return input("\nEscolha uma opção:")
 
 async def emitir_com_retry(documento, total_tentativas=3):
 
