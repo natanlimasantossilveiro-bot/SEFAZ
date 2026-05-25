@@ -137,6 +137,59 @@ def consultar_historico():
 
     if exportar.strip().lower() == "s":
         exportar_historico_filtrado(historico[-quantidade:])
+        
+async def emitir_por_planilha():
+
+    documentos = ler_documentos_planilha("planilha_documentos.xlsx")
+
+    print("\n=== DOCUMENTOS ENCONTRADOS ===\n")
+
+    registros = []
+
+    for item in documentos:
+
+        print(f"\nProcessando documento: {item['documento']}")
+
+        if not item["valido"]:
+
+            log_alerta("Documento inválido. Ignorando...")
+
+            registros.append(
+                {
+                    "documento": item["documento"],
+                    "status": "documento_invalido",
+                    "mensagem": "Documento inválido na planilha.",
+                    "caminho_pdf": None,
+                    "caminho_evidencia": None,
+                }
+            )
+
+            continue
+        
+        resultado = await emitir_com_retry(item["documento"])
+
+        registros.append(resultado)
+
+        if resultado["status"] == "bloqueio_automacao":
+            log_alerta("Bloqueio detectado. Pausando o lote antes de continuar.")
+            await asyncio.sleep(TEMPO_PAUSA_BLOQUEIO)
+
+        tempo_espera = random.randint(TEMPO_ESPERA_MINIMO, TEMPO_ESPERA_MAXIMO)
+
+        log_info(f"Aguardando {tempo_espera} segundos antes da próxima emissão...")
+
+        await asyncio.sleep(tempo_espera)
+
+    print("\n=== RESULTADOS FINAIS ===\n")
+
+    for registro in registros:
+        print(registro)
+
+    log_info("Gerando relatório consolidado...")
+
+    gerar_relatorio_emissao(registros)
+
+    salvar_historico(registros)
 
 async def main():
 
@@ -161,56 +214,7 @@ async def main():
 
         elif opcao == "2":
 
-            documentos = ler_documentos_planilha("planilha_documentos.xlsx")
-
-            print("\n=== DOCUMENTOS ENCONTRADOS ===\n")
-
-            registros = []
-
-            for item in documentos:
-
-                print(f"\nProcessando documento: {item['documento']}")
-
-                if not item["valido"]:
-
-                    log_alerta("Documento inválido. Ignorando...")
-
-                    registros.append(
-                        {
-                            "documento": item["documento"],
-                            "status": "documento_invalido",
-                            "mensagem": "Documento inválido na planilha.",
-                            "caminho_pdf": None,
-                            "caminho_evidencia": None,
-                        }
-                    )
-
-                    continue
-
-                resultado = await emitir_com_retry(item["documento"])
-
-                registros.append(resultado)
-
-                if resultado["status"] == "bloqueio_automacao":
-                    log_alerta("Bloqueio detectado. Pausando o lote antes de continuar.")
-                    await asyncio.sleep(TEMPO_PAUSA_BLOQUEIO)
-
-                tempo_espera = random.randint(TEMPO_ESPERA_MINIMO, TEMPO_ESPERA_MAXIMO)
-
-                log_info(f"Aguardando {tempo_espera} segundos antes da próxima emissão...")
-
-                await asyncio.sleep(tempo_espera)
-
-            print("\n=== RESULTADOS FINAIS ===\n")
-
-            for registro in registros:
-                print(registro)
-
-            log_info("Gerando relatório consolidado...")
-
-            gerar_relatorio_emissao(registros)
-
-            salvar_historico(registros)
+            await emitir_por_planilha()
 
         elif opcao == "3":
 
