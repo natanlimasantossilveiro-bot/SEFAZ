@@ -6,8 +6,9 @@ from src.utils import criar_pastas_necessarias, log_sucesso, log_erro
 from src.emissao_service import (
     emitir_manual,
     emitir_por_planilha,
-    consultar_historico
 )
+
+from src.historico_view_service import consultar_historico
 
 async def main():
 
