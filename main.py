@@ -191,6 +191,19 @@ async def emitir_por_planilha():
 
     salvar_historico(registros)
 
+async def emitir_manual():
+
+    documento = input("Informe o CPF ou CNPJ: ")
+
+    resultado = await emitir_com_retry(documento)
+
+    print("\n=== RESULTADO DA EMISSÃO ===\n")
+    print(resultado)
+
+    gerar_relatorio_emissao([resultado])
+
+    salvar_historico([resultado])
+
 async def main():
 
     criar_pastas_necessarias()
@@ -201,16 +214,7 @@ async def main():
 
         if opcao == "1":
 
-            documento = input("Informe o CPF ou CNPJ: ")
-
-            resultado = await emitir_com_retry(documento)
-
-            print("\n=== RESULTADO DA EMISSÃO ===\n")
-            print(resultado)
-
-            gerar_relatorio_emissao([resultado])
-
-            salvar_historico([resultado])
+            await emitir_manual()
 
         elif opcao == "2":
 
