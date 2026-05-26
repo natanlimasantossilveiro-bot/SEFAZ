@@ -29,6 +29,13 @@ from src.status import (
     STATUS_ERRO_INESPERADO,
 )
 
+from src.mensagens import (
+    MSG_ERRO_INESPERADO_EMISSAO,
+    MSG_RESULTADO_INDEFINIDO,
+    MSG_CERTIDAO_ENCONTRADA,
+    MSG_BLOQUEIO_CONSULTAS,
+)
+
 
 async def aceitar_cookies(page):
 
@@ -140,7 +147,7 @@ async def abrir_pagina_sefaz(documento):
         return {
             "documento": documento,
             "status": STATUS_ERRO_INESPERADO,
-            "mensagem": "Ocorreu um erro inesperado durante a emissão.",
+            "mensagem": MSG_ERRO_INESPERADO_EMISSAO,
             "caminho_pdf": None,
             "caminho_evidencia": None,
         }
@@ -175,7 +182,7 @@ async def verificar_resultado_emissao(page):
     if "Certidões recentes emitidas para o requerente" in conteudo_pagina:
         return {
             "status": STATUS_SUCESSO,
-            "mensagem": "Certidão encontrada para o documento informado.",
+            "mensagem": MSG_CERTIDAO_ENCONTRADA,
         }
     
     if (
@@ -185,12 +192,12 @@ async def verificar_resultado_emissao(page):
         
         return {
             "status": STATUS_BLOQUEIO_AUTOMACAO,
-            "mensagem": "A SEFAZ identificou possível automação ou excesso de consultas."
+            "mensagem": MSG_BLOQUEIO_CONSULTAS
         }
 
     return {
         "status": STATUS_RESULTADO_INDEFINIDO,
-        "mensagem": "Não foi possível identificar o resultado da emissão.",
+        "mensagem": MSG_RESULTADO_INDEFINIDO,
     }
 
 

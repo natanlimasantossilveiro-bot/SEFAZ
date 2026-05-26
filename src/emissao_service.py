@@ -23,10 +23,19 @@ from src.utils import (
     log_alerta,
 )
 
-from src.status import(
+from src.status import (
     STATUS_BLOQUEIO_AUTOMACAO,
     STATUS_DOCUMENTO_INVALIDO,
     STATUS_ERRO_EXECUCAO,
+)
+
+from src.mensagens import (
+    MSG_DOCUMENTO_INVALIDO_NAO_INICIADO,
+    MSG_DOCUMENTO_INVALIDO_IGNORADO,
+    MSG_BLOQUEIO_DETECTADO_RETRY,
+    MSG_BLOQUEIO_DETECTADO_LOTE,
+    MSG_BLOQUEIO_CONSULTAS,
+    MSG_RECOMENDACAO_AGUARDAR
 )
 
 async def emitir_com_retry(documento, total_tentativas=3):
@@ -42,7 +51,7 @@ async def emitir_com_retry(documento, total_tentativas=3):
             )
 
             if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
-                log_alerta("Bloqueio detectado pela SEFAZ. A emissão não será repetida agora.")
+                log_alerta(MSG_BLOQUEIO_DETECTADO_RETRY)
 
             return resultado
         
@@ -78,7 +87,7 @@ async def emitir_por_planilha():
 
         if not item["valido"]:
 
-            log_alerta("Documento inválido. Ignorando...")
+            log_alerta(MSG_DOCUMENTO_INVALIDO_IGNORADO)
 
             registros.append(
                 {
@@ -100,7 +109,7 @@ async def emitir_por_planilha():
             
             minutos_pausa = TEMPO_PAUSA_BLOQUEIO // 60
 
-            log_alerta("Bloqueio detectado pela SEFAZ durante o lote.")
+            log_alerta(MSG_BLOQUEIO_DETECTADO_LOTE)
             log_alerta(
                 f"O sistema ficará pausado por aproximadamente {minutos_pausa} minutos."
             )
@@ -131,7 +140,7 @@ async def emitir_manual():
     documento = limpar_documento(documento)
 
     if not validar_documento(documento):
-        log_alerta("Documento inválido. A emissão não será iniciada.")
+        log_alerta(MSG_DOCUMENTO_INVALIDO_NAO_INICIADO)
 
         resultado = {
             "documento": documento,
@@ -156,8 +165,8 @@ async def emitir_manual():
     print(resultado)
 
     if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
-        log_alerta("A SEFAZ bloqueou temporariamente as consultas.")
-        log_alerta("Recomenda-se aguardar alguns minutos antes de tentar novamente.")
+        log_alerta(MSG_BLOQUEIO_CONSULTAS)
+        log_alerta(MSG_RECOMENDACAO_AGUARDAR)
 
     gerar_relatorio_emissao([resultado])
 
