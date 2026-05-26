@@ -35,7 +35,9 @@ from src.mensagens import (
     MSG_BLOQUEIO_DETECTADO_RETRY,
     MSG_BLOQUEIO_DETECTADO_LOTE,
     MSG_BLOQUEIO_CONSULTAS,
-    MSG_RECOMENDACAO_AGUARDAR
+    MSG_RECOMENDACAO_AGUARDAR,
+    MSG_DOCUMENTO_INVALIDO_MANUAL,
+    MSG_DOCUMENTO_INVALIDO_PLANILHA,
 )
 
 from src.resultado_factory import criar_resultado
@@ -93,7 +95,7 @@ async def emitir_por_planilha():
                 criar_resultado(
                     documento=item["documento"],
                     status=STATUS_DOCUMENTO_INVALIDO,
-                    mensagem="Documento inválido na planilha.",
+                    mensagem=MSG_DOCUMENTO_INVALIDO_PLANILHA,
                 )
             )
 
@@ -143,7 +145,7 @@ async def emitir_manual():
         resultado = criar_resultado(
             documento=documento,
             status=STATUS_DOCUMENTO_INVALIDO,
-            mensagem="CPF ou CNPJ inválido informado manualmente.",
+            mensagem=MSG_DOCUMENTO_INVALIDO_MANUAL,
         )
 
         print("\n=== RESULTADO DA EMISSÃO ===\n")

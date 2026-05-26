@@ -1,6 +1,8 @@
 # Documento
 MSG_DOCUMENTO_INVALIDO_NAO_INICIADO = "Documento inválido. A emissão não será iniciada."
 MSG_DOCUMENTO_INVALIDO_IGNORADO = "Documento inválido. Ignorando..."
+MSG_DOCUMENTO_INVALIDO_MANUAL = "CPF ou CNPJ inválido informado manualmente."
+MSG_DOCUMENTO_INVALIDO_PLANILHA = "Documento inválido na planilha."
 
 # Bloqueio
 MSG_BLOQUEIO_DETECTADO_RETRY = "Bloqueio detectado pela SEFAZ. A emissão não será repetida agora."
