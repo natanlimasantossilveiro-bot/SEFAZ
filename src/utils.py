@@ -28,15 +28,58 @@ def identificar_tipo_documento(documento):
     return "INVÁLIDO"
 
 
+def validar_cpf(cpf):
+    cpf = limpar_documento(cpf)
+
+    if len(cpf) != 11:
+        return False
+    
+    if cpf == cpf[0] * 11:
+        return False
+    
+    soma = sum(int(cpf[i]) * (10 - i) for i in range(9))
+    primeiro_digito = (soma * 10) % 11
+    primeiro_digito = 0 if primeiro_digito == 10 else primeiro_digito
+
+    soma = sum(int(cpf[i]) * (11 - i) for i in range(10))
+    segundo_digito = (soma * 10) % 11
+    segundo_digito = 0 if segundo_digito == 10 else segundo_digito
+
+    return cpf[-2:] == f"{primeiro_digito}{segundo_digito}"
+
+
+def validar_cnpj(cnpj):
+    cnpj = limpar_documento(cnpj)
+
+    if len(cnpj) != 14:
+        return False
+    
+    if cnpj == cnpj[0] * 14:
+        return False
+    
+    pesos_primeiro = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+    pesos_segundo = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+
+    soma = sum(int(cnpj[i]) * pesos_primeiro[i] for i in range(12))
+    resto = soma % 11
+    primeiro_digito = 0 if resto < 2 else 11 - resto
+
+    soma = sum(int(cnpj[i]) * pesos_segundo[i] for i in range(13))
+    resto = soma % 11
+    segundo_digito = 0 if resto < 2 else 11 - resto
+
+    return cnpj[-2:] == f"{primeiro_digito}{segundo_digito}"
+
+
 def validar_documento(documento):
     tipo = identificar_tipo_documento(documento)
 
     if tipo == "CPF":
-        return True
-
+        return validar_cpf(documento)
+    
     if tipo == "CNPJ":
-        return True
-
+        return validar_cnpj(documento)
+    
     return False
 
 

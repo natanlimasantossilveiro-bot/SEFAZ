@@ -16,6 +16,8 @@ from src.config import (
 )
 
 from src.utils import (
+    limpar_documento, 
+    validar_documento,
     log_info,
     log_erro,
     log_alerta,
@@ -120,6 +122,28 @@ async def emitir_manual():
 
     documento = input("Informe o CPF ou CNPJ: ")
 
+    documento = limpar_documento(documento)
+
+    if not validar_documento(documento):
+        log_alerta("Documento inválido. A emissão não será iniciada.")
+
+        resultado = {
+            "documento": documento,
+            "status": "documento_invalido",
+            "mensagem": "CPF ou CNPJ inválido informado manualmente.",
+            "caminho_pdf": None,
+            "caminho_evidencia": None,
+        }
+
+        print("\n=== RESULTADO DA EMISSÃO ===\n")
+        print(resultado)
+
+        gerar_relatorio_emissao([resultado])
+
+        salvar_historico([resultado])
+
+        return
+    
     resultado = await emitir_com_retry(documento)
 
     print("\n=== RESULTADO DA EMISSÃO ===\n")
