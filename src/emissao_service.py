@@ -23,6 +23,12 @@ from src.utils import (
     log_alerta,
 )
 
+from src.status import(
+    STATUS_BLOQUEIO_AUTOMACAO,
+    STATUS_DOCUMENTO_INVALIDO,
+    STATUS_ERRO_EXECUCAO,
+)
+
 async def emitir_com_retry(documento, total_tentativas=3):
 
     for tentativa in range(1, total_tentativas + 1):
@@ -35,7 +41,7 @@ async def emitir_com_retry(documento, total_tentativas=3):
                 timeout=TIMEOUT_EMISSAO
             )
 
-            if resultado["status"] == "bloqueio_automacao":
+            if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
                 log_alerta("Bloqueio detectado pela SEFAZ. A emissão não será repetida agora.")
 
             return resultado
@@ -52,7 +58,7 @@ async def emitir_com_retry(documento, total_tentativas=3):
 
     return {
         "documento": documento,
-        "status": "erro_execucao",
+        "status": STATUS_ERRO_EXECUCAO,
         "mensagem": f"Falha após {total_tentativas} tentativas.",
         "caminho_pdf": None,
         "caminho_evidencia": None,
@@ -77,7 +83,7 @@ async def emitir_por_planilha():
             registros.append(
                 {
                     "documento": item["documento"],
-                    "status": "documento_invalido",
+                    "status": STATUS_DOCUMENTO_INVALIDO,
                     "mensagem": "Documento inválido na planilha.",
                     "caminho_pdf": None,
                     "caminho_evidencia": None,
@@ -90,7 +96,7 @@ async def emitir_por_planilha():
 
         registros.append(resultado)
 
-        if resultado["status"] == "bloqueio_automacao":
+        if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
             
             minutos_pausa = TEMPO_PAUSA_BLOQUEIO // 60
 
@@ -129,7 +135,7 @@ async def emitir_manual():
 
         resultado = {
             "documento": documento,
-            "status": "documento_invalido",
+            "status": STATUS_DOCUMENTO_INVALIDO,
             "mensagem": "CPF ou CNPJ inválido informado manualmente.",
             "caminho_pdf": None,
             "caminho_evidencia": None,
@@ -149,7 +155,7 @@ async def emitir_manual():
     print("\n=== RESULTADO DA EMISSÃO ===\n")
     print(resultado)
 
-    if resultado["status"] == "bloqueio_automacao":
+    if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
         log_alerta("A SEFAZ bloqueou temporariamente as consultas.")
         log_alerta("Recomenda-se aguardar alguns minutos antes de tentar novamente.")
 

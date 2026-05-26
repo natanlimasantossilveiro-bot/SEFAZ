@@ -1,0 +1,6 @@
+STATUS_SUCESSO = "sucesso"
+STATUS_DOCUMENTO_INVALIDO = "documento_invalido"
+STATUS_BLOQUEIO_AUTOMACAO = "bloqueio_automacao"
+STATUS_RESULTADO_INDEFINIDO = "resultado_indefinido"
+STATUS_ERRO_EXECUCAO = "erro_execucao"
+STATUS_ERRO_INESPERADO = "erro_inesperado"

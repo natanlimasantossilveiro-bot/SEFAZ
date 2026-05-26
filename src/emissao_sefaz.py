@@ -21,6 +21,14 @@ from src.config import (
     TEMPO_ENTRE_TECLAS_MAXIMO,
 )
 
+from src.status import (
+    STATUS_SUCESSO,
+    STATUS_DOCUMENTO_INVALIDO,
+    STATUS_BLOQUEIO_AUTOMACAO,
+    STATUS_RESULTADO_INDEFINIDO,
+    STATUS_ERRO_INESPERADO,
+)
+
 
 async def aceitar_cookies(page):
 
@@ -99,7 +107,7 @@ async def abrir_pagina_sefaz(documento):
 
         caminho_pdf = None
         
-        if resultado["status"] == "sucesso":
+        if resultado["status"] == STATUS_SUCESSO:
 
             await baixar_pdf(page)
 
@@ -131,7 +139,7 @@ async def abrir_pagina_sefaz(documento):
 
         return {
             "documento": documento,
-            "status": "erro_inesperado",
+            "status": STATUS_ERRO_INESPERADO,
             "mensagem": "Ocorreu um erro inesperado durante a emissão.",
             "caminho_pdf": None,
             "caminho_evidencia": None,
@@ -159,14 +167,14 @@ async def verificar_resultado_emissao(page):
     log_debug(conteudo_pagina)
 
     if "CPF inválido" in conteudo_pagina:
-        return {"status": "documento_invalido", "mensagem": "CPF inválido informado."}
+        return {"status": STATUS_DOCUMENTO_INVALIDO, "mensagem": "CPF inválido informado."}
 
     if "CNPJ inválido" in conteudo_pagina:
-        return {"status": "documento_invalido", "mensagem": "CNPJ inválido informado."}
+        return {"status": STATUS_DOCUMENTO_INVALIDO, "mensagem": "CNPJ inválido informado."}
 
     if "Certidões recentes emitidas para o requerente" in conteudo_pagina:
         return {
-            "status": "sucesso",
+            "status": STATUS_SUCESSO,
             "mensagem": "Certidão encontrada para o documento informado.",
         }
     
@@ -176,12 +184,12 @@ async def verificar_resultado_emissao(page):
     ):
         
         return {
-            "status": "bloqueio_automacao",
+            "status": STATUS_BLOQUEIO_AUTOMACAO,
             "mensagem": "A SEFAZ identificou possível automação ou excesso de consultas."
         }
 
     return {
-        "status": "resultado_indefinido",
+        "status": STATUS_RESULTADO_INDEFINIDO,
         "mensagem": "Não foi possível identificar o resultado da emissão.",
     }
 
