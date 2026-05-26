@@ -36,6 +36,8 @@ from src.mensagens import (
     MSG_BLOQUEIO_CONSULTAS,
 )
 
+from src.resultado_factory import criar_resultado
+
 
 async def aceitar_cookies(page):
 
@@ -126,13 +128,13 @@ async def abrir_pagina_sefaz(documento):
 
             browser = None
 
-        registro = {
-            "documento": documento,
-            "status": resultado["status"],
-            "mensagem": resultado["mensagem"],
-            "caminho_pdf": caminho_pdf,
-            "caminho_evidencia": caminho_evidencia,
-        }
+        registro = criar_resultado(
+            documento=documento,
+            status=resultado["status"],
+            mensagem=resultado["mensagem"],
+            caminho_pdf=caminho_pdf,
+            caminho_evidencia=caminho_evidencia,
+        )
 
         log_sucesso("Página da SEFAZ processada com sucesso!")
 
@@ -144,13 +146,11 @@ async def abrir_pagina_sefaz(documento):
     except Exception as erro:
         log_erro(f"Erro inesperado durante a emissão na SEFAZ: {erro}")
 
-        return {
-            "documento": documento,
-            "status": STATUS_ERRO_INESPERADO,
-            "mensagem": MSG_ERRO_INESPERADO_EMISSAO,
-            "caminho_pdf": None,
-            "caminho_evidencia": None,
-        }
+        return criar_resultado(
+            documento=documento,
+            status=STATUS_ERRO_INESPERADO,
+            mensagem=MSG_ERRO_INESPERADO_EMISSAO,
+        )
     
     finally:
         if browser:

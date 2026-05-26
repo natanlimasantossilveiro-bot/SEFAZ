@@ -38,6 +38,8 @@ from src.mensagens import (
     MSG_RECOMENDACAO_AGUARDAR
 )
 
+from src.resultado_factory import criar_resultado
+
 async def emitir_com_retry(documento, total_tentativas=3):
 
     for tentativa in range(1, total_tentativas + 1):
@@ -65,13 +67,11 @@ async def emitir_com_retry(documento, total_tentativas=3):
 
                 await asyncio.sleep(tempo_espera)
 
-    return {
-        "documento": documento,
-        "status": STATUS_ERRO_EXECUCAO,
-        "mensagem": f"Falha após {total_tentativas} tentativas.",
-        "caminho_pdf": None,
-        "caminho_evidencia": None,
-    }
+    return criar_resultado(
+        documento=documento,
+        status=STATUS_ERRO_EXECUCAO,
+        mensagem=f"Falha após {total_tentativas} tentativas.",
+    )
         
 async def emitir_por_planilha():
 
@@ -90,13 +90,11 @@ async def emitir_por_planilha():
             log_alerta(MSG_DOCUMENTO_INVALIDO_IGNORADO)
 
             registros.append(
-                {
-                    "documento": item["documento"],
-                    "status": STATUS_DOCUMENTO_INVALIDO,
-                    "mensagem": "Documento inválido na planilha.",
-                    "caminho_pdf": None,
-                    "caminho_evidencia": None,
-                }
+                criar_resultado(
+                    documento=item["documento"],
+                    status=STATUS_DOCUMENTO_INVALIDO,
+                    mensagem="Documento inválido na planilha.",
+                )
             )
 
             continue
@@ -142,13 +140,11 @@ async def emitir_manual():
     if not validar_documento(documento):
         log_alerta(MSG_DOCUMENTO_INVALIDO_NAO_INICIADO)
 
-        resultado = {
-            "documento": documento,
-            "status": STATUS_DOCUMENTO_INVALIDO,
-            "mensagem": "CPF ou CNPJ inválido informado manualmente.",
-            "caminho_pdf": None,
-            "caminho_evidencia": None,
-        }
+        resultado = criar_resultado(
+            documento=documento,
+            status=STATUS_DOCUMENTO_INVALIDO,
+            mensagem="CPF ou CNPJ inválido informado manualmente.",
+        )
 
         print("\n=== RESULTADO DA EMISSÃO ===\n")
         print(resultado)
