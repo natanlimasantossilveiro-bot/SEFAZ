@@ -136,3 +136,4 @@ def log_alerta(mensagem):
 def log_debug(mensagem):
     if DEBUG:
         print(f"[DEBUG] {mensagem}")
+        registrar_info(f"[DEBUG] {mensagem}")
