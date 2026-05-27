@@ -4,6 +4,15 @@ import re
 from datetime import datetime
 from src.config import DEBUG
 
+from src.paths import (
+    PASTA_DOWNLOADS,
+    PASTA_CERTIDOES_EMITIDAS,
+    PASTA_EVIDENCIAS,
+    PASTA_HISTORICO,
+    PASTA_RELATORIOS,
+    PASTA_UPLOADS,
+)
+
 def agora_formatado():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -85,12 +94,12 @@ def validar_documento(documento):
 
 def criar_pastas_necessarias():
     pastas = [
-        "downloads",
-        "certidoes_emitidas",
-        "evidencias",
-        "historico",
-        "relatorios",
-        "uploads"
+        PASTA_DOWNLOADS,
+        PASTA_CERTIDOES_EMITIDAS,
+        PASTA_EVIDENCIAS,
+        PASTA_HISTORICO,
+        PASTA_RELATORIOS,
+        PASTA_UPLOADS,
     ]
 
     for pasta in pastas:

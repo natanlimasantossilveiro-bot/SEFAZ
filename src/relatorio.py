@@ -1,16 +1,18 @@
 import csv
-import os 
+import os
 
 from src.utils import agora_para_nome_arquivo
 
+from src.paths import PASTA_RELATORIOS
+
 def gerar_relatorio_emissao(registros):
 
-    os.makedirs("relatorios", exist_ok=True)
+    os.makedirs(PASTA_RELATORIOS, exist_ok=True)
 
     nome_arquivo = f"relatorio_sefaz_{agora_para_nome_arquivo()}.csv"
 
     caminho_relatorio = os.path.join(
-        "relatorios",
+        PASTA_RELATORIOS,
         nome_arquivo
     )
 

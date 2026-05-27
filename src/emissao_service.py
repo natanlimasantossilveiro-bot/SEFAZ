@@ -40,6 +40,8 @@ from src.mensagens import (
     MSG_DOCUMENTO_INVALIDO_PLANILHA,
 )
 
+from src.paths import ARQUIVO_PLANILHA_DOCUMENTOS
+
 from src.resultado_factory import criar_resultado
 
 async def emitir_com_retry(documento, total_tentativas=3):
@@ -77,7 +79,7 @@ async def emitir_com_retry(documento, total_tentativas=3):
         
 async def emitir_por_planilha():
 
-    documentos = ler_documentos_planilha("planilha_documentos.xlsx")
+    documentos = ler_documentos_planilha(ARQUIVO_PLANILHA_DOCUMENTOS)
 
     print("\n=== DOCUMENTOS ENCONTRADOS ===\n")
 

@@ -3,10 +3,20 @@ import os
 
 from src.utils import agora_formatado, limpar_documento
 
-CAMINHO_HISTORICO = os.path.join("historico", "historico_emissoes.csv")
+from src.paths import PASTA_HISTORICO, PASTA_RELATORIOS
+
+from src.status import (
+    STATUS_SUCESSO,
+    STATUS_ERRO_EXECUCAO,
+    STATUS_BLOQUEIO_AUTOMACAO,
+    STATUS_DOCUMENTO_INVALIDO,
+    STATUS_RESULTADO_INDEFINIDO,
+)
+
+CAMINHO_HISTORICO = os.path.join(PASTA_HISTORICO, "historico_emissoes.csv")
 
 def salvar_historico(registros):
-    os.makedirs("historico", exist_ok=True)
+    os.makedirs(PASTA_HISTORICO, exist_ok=True)
 
     colunas = [
         "data_hora",
@@ -75,11 +85,11 @@ def filtrar_historico_por_documento(documento):
     return registros_filtrados
 
 def exportar_historico_filtrado(registros):
-    os.makedirs("relatorios", exist_ok=True)
+    os.makedirs(PASTA_RELATORIOS, exist_ok=True)
 
     nome_arquivo = f"historico_filtrado_{agora_formatado().replace(':', '_').replace(' ', '_')}.csv"
 
-    caminho_relatorio = os.path.join("relatorios", nome_arquivo)
+    caminho_relatorio = os.path.join(PASTA_RELATORIOS, nome_arquivo)
 
     colunas = [
         "data_hora",
@@ -109,11 +119,11 @@ def gerar_estatisticas_historico(registros):
 
     estatisticas = {
         "total": len(registros),
-        "sucesso": 0,
-        "erro_execucao": 0,
-        "bloqueio_automacao": 0,
-        "documento_invalido": 0,
-        "resultado_indefinido": 0,
+        STATUS_SUCESSO: 0,
+        STATUS_ERRO_EXECUCAO: 0,
+        STATUS_BLOQUEIO_AUTOMACAO: 0,
+        STATUS_DOCUMENTO_INVALIDO: 0,
+        STATUS_RESULTADO_INDEFINIDO: 0,
     }
 
     for registro in registros:
