@@ -2,7 +2,11 @@ import os
 import shutil
 import time
 
-from src.utils import agora_para_nome_arquivo
+from src.utils import (
+    agora_para_nome_arquivo,
+    log_alerta,
+    log_sucesso,
+)
 
 from src.paths import PASTA_CERTIDOES_EMITIDAS
 
@@ -22,7 +26,7 @@ def mover_pdf_mais_recente(documento):
     ]
 
     if not arquivos_pdf:
-        print(MSG_PDF_NAO_ENCONTRADO)
+        log_alerta(MSG_PDF_NAO_ENCONTRADO)
         return None
 
     caminhos_completos = [
@@ -41,7 +45,7 @@ def mover_pdf_mais_recente(documento):
             break
 
         except PermissionError:
-            print(f"PDF ainda está em uso. Tentativa {tentativa}/10...")
+            log_alerta(f"PDF ainda está em uso. Tentativa {tentativa}/10...")
             time.sleep(1)
 
     else:
@@ -49,8 +53,8 @@ def mover_pdf_mais_recente(documento):
             f"Não foi possível mover o PDF após várias tentativas: {pdf_mais_recente}"
         )
 
-    print(MSG_PDF_MOVIDO_SUCESSO)
+    log_sucesso(MSG_PDF_MOVIDO_SUCESSO)
 
-    print("Destino: ", destino)
+    log_sucesso(f"Destino: {destino}")
 
     return destino
