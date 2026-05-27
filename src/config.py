@@ -1,6 +1,12 @@
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 URL_SEFAZ = "https://cdwfazenda.paas.pr.gov.br/cdwportal/certidao/automatica"
 
-TIMEOUT_EMISSAO = 60
+TIMEOUT_EMISSAO = int(os.getenv("TIMEOUT_EMISSAO", 60))
 
 TEMPO_ESPERA_MINIMO = 8
 TEMPO_ESPERA_MAXIMO = 15
@@ -22,6 +28,6 @@ TEMPO_ANTES_DIGITAR_MAXIMO = 3.5
 TEMPO_ENTRE_TECLAS_MINIMO = 0.1
 TEMPO_ENTRE_TECLAS_MAXIMO = 0.4
 
-TEMPO_PAUSA_BLOQUEIO = 300
+TEMPO_PAUSA_BLOQUEIO = int(os.getenv("TEMPO_PAUSA_BLOQUEIO", 300))
 
-DEBUG = False
+DEBUG = os.getenv("DEBUG", "False") == "True"
