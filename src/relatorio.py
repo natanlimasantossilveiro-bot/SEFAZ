@@ -1,7 +1,10 @@
 import csv
 import os
 
-from src.utils import agora_para_nome_arquivo
+from src.utils import (
+    agora_para_nome_arquivo,
+    log_sucesso,
+)
 
 from src.paths import PASTA_RELATORIOS
 
@@ -36,7 +39,7 @@ def gerar_relatorio_emissao(registros):
 
         escritor.writerows(registros)
 
-    print("Relatório gerado com sucesso!")
-    print("Caminho: ", caminho_relatorio)
+    log_sucesso("Relatório gerado com sucesso!")
+    log_sucesso(f"Caminho: {caminho_relatorio}")
 
     return caminho_relatorio    
