@@ -13,6 +13,13 @@ from src.paths import (
     PASTA_UPLOADS,
 )
 
+from src.logger_service import (
+    registrar_info,
+    registrar_sucesso,
+    registrar_alerta,
+    registrar_erro,
+)
+
 def agora_formatado():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -108,18 +115,22 @@ def criar_pastas_necessarias():
 
 def log_info(mensagem):
     print(f"[INFO] {mensagem}")
+    registrar_info(mensagem)
 
 
 def log_sucesso(mensagem):
     print(f"[SUCESSO] {mensagem}")
+    registrar_sucesso(mensagem)
 
 
 def log_erro(mensagem):
     print(f"[ERRO] {mensagem}")
+    registrar_erro(mensagem)
 
 
 def log_alerta(mensagem):
     print(f"[ALERTA] {mensagem}")
+    registrar_alerta(mensagem)
 
 
 def log_debug(mensagem):
