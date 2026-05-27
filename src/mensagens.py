@@ -14,3 +14,4 @@ MSG_RECOMENDACAO_AGUARDAR = "Recomenda-se aguardar alguns minutos antes de tenta
 MSG_ERRO_INESPERADO_EMISSAO = "Ocorreu um erro inesperado durante a emissão."
 MSG_RESULTADO_INDEFINIDO = "Não foi possível identificar o resultado da emissão."
 MSG_CERTIDAO_ENCONTRADA = "Certidão encontrada para o documento informado."
+MSG_EVIDENCIA_SALVA_SUCESSO = "Evidência salva com sucesso!"

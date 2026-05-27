@@ -4,6 +4,8 @@ from src.utils import agora_para_nome_arquivo
 
 from src.paths import PASTA_EVIDENCIAS
 
+from src.mensagens import MSG_EVIDENCIA_SALVA_SUCESSO
+
 async def salvar_evidencia(page, documento, status):
     nome_arquivo = f"SEFAZ_{documento}_{status}_{agora_para_nome_arquivo()}.png"
 
@@ -11,7 +13,7 @@ async def salvar_evidencia(page, documento, status):
 
     await page.save_screenshot(caminho)
 
-    print("Evidência salva com sucesso!")
+    print(MSG_EVIDENCIA_SALVA_SUCESSO)
     print("Caminho: ", caminho)
 
     return caminho
