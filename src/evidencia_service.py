@@ -1,6 +1,9 @@
 import os
 
-from src.utils import agora_para_nome_arquivo
+from src.utils import (
+    agora_para_nome_arquivo,
+    log_sucesso,
+)
 
 from src.paths import PASTA_EVIDENCIAS
 
@@ -13,7 +16,7 @@ async def salvar_evidencia(page, documento, status):
 
     await page.save_screenshot(caminho)
 
-    print(MSG_EVIDENCIA_SALVA_SUCESSO)
-    print("Caminho: ", caminho)
+    log_sucesso(MSG_EVIDENCIA_SALVA_SUCESSO)
+    log_sucesso(f"Caminho: {caminho}")
 
     return caminho
