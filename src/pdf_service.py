@@ -4,10 +4,9 @@ import time
 
 from src.utils import agora_para_nome_arquivo
 
+from src.paths import PASTA_CERTIDOES_EMITIDAS
+
 PASTA_DOWNLOADS = os.path.join(os.path.expanduser("~"), "Downloads")
-
-PASTA_CERTIDOES = "certidoes_emitidas"
-
 
 def mover_pdf_mais_recente(documento):
 
@@ -29,7 +28,7 @@ def mover_pdf_mais_recente(documento):
 
     nome_novo = f"SEFAZ_{documento}_{agora_para_nome_arquivo()}.pdf"
 
-    destino = os.path.join(PASTA_CERTIDOES, nome_novo)
+    destino = os.path.join(PASTA_CERTIDOES_EMITIDAS, nome_novo)
 
     for tentativa in range(1, 11):
         try:

@@ -2,9 +2,7 @@ import os
 
 from src.utils import agora_para_nome_arquivo
 
-
-PASTA_EVIDENCIAS = "evidencias"
-
+from src.paths import PASTA_EVIDENCIAS
 
 async def salvar_evidencia(page, documento, status):
     nome_arquivo = f"SEFAZ_{documento}_{status}_{agora_para_nome_arquivo()}.png"
