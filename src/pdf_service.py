@@ -6,6 +6,11 @@ from src.utils import agora_para_nome_arquivo
 
 from src.paths import PASTA_CERTIDOES_EMITIDAS
 
+from src.mensagens import (
+    MSG_PDF_NAO_ENCONTRADO,
+    MSG_PDF_MOVIDO_SUCESSO,
+)
+
 PASTA_DOWNLOADS = os.path.join(os.path.expanduser("~"), "Downloads")
 
 def mover_pdf_mais_recente(documento):
@@ -17,7 +22,7 @@ def mover_pdf_mais_recente(documento):
     ]
 
     if not arquivos_pdf:
-        print("Nenhum PDF encontrado na pasta Downloads.")
+        print(MSG_PDF_NAO_ENCONTRADO)
         return None
 
     caminhos_completos = [
@@ -44,7 +49,7 @@ def mover_pdf_mais_recente(documento):
             f"Não foi possível mover o PDF após várias tentativas: {pdf_mais_recente}"
         )
 
-    print("PDF movido com sucesso!")
+    print(MSG_PDF_MOVIDO_SUCESSO)
 
     print("Destino: ", destino)
 
