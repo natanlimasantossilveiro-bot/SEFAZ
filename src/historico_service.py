@@ -1,7 +1,12 @@
 import csv
 import os
 
-from src.utils import agora_formatado, limpar_documento
+from src.utils import (
+    agora_formatado,
+    limpar_documento,
+    log_info,
+    log_sucesso,
+)
 
 from src.paths import PASTA_HISTORICO, PASTA_RELATORIOS
 
@@ -51,11 +56,11 @@ def salvar_historico(registros):
 
             escritor.writerow(linha)
 
-    print("Histórico atualizado com sucesso!")
+    log_sucesso("Histórico atualizado com sucesso!")
 
 def listar_historico():
     if not os.path.exists(CAMINHO_HISTORICO):
-        print("Nenhum histórico encontrado.")
+        log_info("Nenhum histórico encontrado.")
         return []
     
     registros = []
@@ -110,8 +115,8 @@ def exportar_historico_filtrado(registros):
         escritor.writeheader()
         escritor.writerows(registros)
 
-    print("Histórico filtrado exportado com sucesso!")
-    print("Caminho: ", caminho_relatorio)
+    log_sucesso("Histórico filtrado exportado com sucesso!")
+    log_sucesso(f"Caminho: {caminho_relatorio}")
 
     return caminho_relatorio
 
