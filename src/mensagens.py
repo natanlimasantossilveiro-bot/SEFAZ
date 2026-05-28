@@ -17,8 +17,30 @@ MSG_CERTIDAO_ENCONTRADA = "Certidão encontrada para o documento informado."
 MSG_EVIDENCIA_SALVA_SUCESSO = "Evidência salva com sucesso!"
 MSG_PDF_NAO_ENCONTRADO = "Nenhum PDF encontrado na pasta Downloads."
 MSG_PDF_MOVIDO_SUCESSO = "PDF movido com sucesso!"
+MSG_GERANDO_RELATORIO_CONSOLIDADO = "Gerando relatório consolidado..."
 
 # Terminal
 MSG_SISTEMA_ENCERRADO = "Sistema encerrado."
 MSG_OPCAO_INVALIDA = "Opção inválida."
 MSG_NENHUM_REGISTRO_ENCONTRADO = "Nenhum registro encontrado."
+
+# Espera / Retry
+MSG_AGUARDANDO_RETRY = (
+    "Aguardando {tempo} segundos antes de tentar novamente..."
+)
+
+MSG_AGUARDANDO_PROXIMA_EMISSAO = (
+    "Aguardando {tempo} segundos antes da próxima emissão..."
+)
+
+MSG_PAUSA_BLOQUEIO = (
+    "O sistema ficará pausado por aproximadamente {minutos} minutos."
+)
+
+# Títulos
+MSG_TITULO_AUTOMACAO = "AUTOMAÇÃO SEFAZ"
+MSG_TITULO_HISTORICO = "HISTÓRICO DE EMISSÕES"
+MSG_TITULO_RESUMO = "Resumo"
+MSG_TITULO_RESULTADO_EMISSAO = "RESULTADO DA EMISSÃO"
+MSG_TITULO_RESULTADOS_FINAIS = "RESULTADOS FINAIS"
+MSG_TITULO_DOCUMENTOS_ENCONTRADOS = "DOCUMENTOS ENCONTRADOS"

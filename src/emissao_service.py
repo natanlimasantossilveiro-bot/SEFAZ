@@ -37,6 +37,13 @@ from src.mensagens import (
     MSG_RECOMENDACAO_AGUARDAR,
     MSG_DOCUMENTO_INVALIDO_MANUAL,
     MSG_DOCUMENTO_INVALIDO_PLANILHA,
+    MSG_AGUARDANDO_RETRY,
+    MSG_AGUARDANDO_PROXIMA_EMISSAO,
+    MSG_PAUSA_BLOQUEIO,
+    MSG_GERANDO_RELATORIO_CONSOLIDADO,
+    MSG_TITULO_DOCUMENTOS_ENCONTRADOS,
+    MSG_TITULO_RESULTADOS_FINAIS,
+    MSG_TITULO_RESULTADO_EMISSAO,
 )
 
 from src.paths import ARQUIVO_PLANILHA_DOCUMENTOS
@@ -77,7 +84,7 @@ async def emitir_com_retry(documento, total_tentativas=3):
             if tentativa < total_tentativas:
                 tempo_espera = random.randint(TEMPO_RETRY_MINIMO, TEMPO_RETRY_MAXIMO)
 
-                log_alerta(f"Aguardando {tempo_espera} segundos antes de tentar novamente...")
+                log_alerta(MSG_AGUARDANDO_RETRY.format(tempo=tempo_espera))
 
                 await asyncio.sleep(tempo_espera)
 
@@ -91,7 +98,7 @@ async def emitir_por_planilha():
 
     documentos = ler_documentos_planilha(ARQUIVO_PLANILHA_DOCUMENTOS)
 
-    exibir_titulo("DOCUMENTOS ENCONTRADOS")
+    exibir_titulo(MSG_TITULO_DOCUMENTOS_ENCONTRADOS)
 
     registros = []
 
@@ -122,24 +129,22 @@ async def emitir_por_planilha():
             minutos_pausa = TEMPO_PAUSA_BLOQUEIO // 60
 
             log_alerta(MSG_BLOQUEIO_DETECTADO_LOTE)
-            log_alerta(
-                f"O sistema ficará pausado por aproximadamente {minutos_pausa} minutos."
-            )
+            log_alerta(MSG_PAUSA_BLOQUEIO.format(minutos=minutos_pausa))
 
             await asyncio.sleep(TEMPO_PAUSA_BLOQUEIO)
 
         tempo_espera = random.randint(TEMPO_ESPERA_MINIMO, TEMPO_ESPERA_MAXIMO)
 
-        log_info(f"Aguardando {tempo_espera} segundos antes da próxima emissão...")
+        log_info(MSG_AGUARDANDO_PROXIMA_EMISSAO.format(tempo=tempo_espera))
 
         await asyncio.sleep(tempo_espera)
 
-    exibir_titulo("RESULTADOS FINAIS")
+    exibir_titulo(MSG_TITULO_RESULTADOS_FINAIS)
 
     for registro in registros:
         exibir_mensagem(registro)
 
-    log_info("Gerando relatório consolidado...")
+    log_info(MSG_GERANDO_RELATORIO_CONSOLIDADO)
 
     gerar_relatorio_emissao(registros)
 
@@ -160,7 +165,7 @@ async def emitir_manual():
             mensagem=MSG_DOCUMENTO_INVALIDO_MANUAL,
         )
 
-        exibir_titulo("RESULTADO DA EMISSÃO")
+        exibir_titulo(MSG_TITULO_RESULTADO_EMISSAO)
         exibir_mensagem(resultado)
 
         gerar_relatorio_emissao([resultado])
@@ -171,7 +176,7 @@ async def emitir_manual():
     
     resultado = await emitir_com_retry(documento)
 
-    exibir_titulo("RESULTADO DA EMISSÃO")
+    exibir_titulo(MSG_TITULO_RESULTADO_EMISSAO)
     exibir_mensagem(resultado)
 
     if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:

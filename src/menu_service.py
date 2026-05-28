@@ -4,9 +4,11 @@ from src.terminal_service import (
     solicitar_entrada,
 )
 
+from src.mensagens import MSG_TITULO_AUTOMACAO
+
 def exibir_menu():
 
-    exibir_titulo("AUTOMAÇÃO SEFAZ")
+    exibir_titulo(MSG_TITULO_AUTOMACAO)
 
     exibir_mensagem("1- Emitir certidão manual")
     exibir_mensagem("2- Emitir certidões por planilha")

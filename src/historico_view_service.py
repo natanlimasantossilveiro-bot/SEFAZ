@@ -11,7 +11,11 @@ from src.terminal_service import (
     solicitar_entrada,
 )
 
-from src.mensagens import MSG_NENHUM_REGISTRO_ENCONTRADO
+from src.mensagens import (
+    MSG_NENHUM_REGISTRO_ENCONTRADO,
+    MSG_TITULO_HISTORICO,
+    MSG_TITULO_RESUMO,
+)
 
 from src.input_validator import (
     entrada_eh_numero,
@@ -37,7 +41,7 @@ def consultar_historico():
 
     historico = listar_historico()
 
-    exibir_titulo("HISTÓRICO DE EMISSÕES")
+    exibir_titulo(MSG_TITULO_HISTORICO)
 
     if not historico:
         exibir_mensagem(MSG_NENHUM_REGISTRO_ENCONTRADO)
@@ -52,7 +56,7 @@ def consultar_historico():
 
     estatisticas = gerar_estatisticas_historico(historico)
 
-    exibir_titulo("Resumo")
+    exibir_titulo(MSG_TITULO_RESUMO)
     exibir_mensagem(f"Total de registros: {estatisticas['total']}")
     exibir_mensagem(f"Sucessos: {estatisticas['sucesso']}")
     exibir_mensagem(f"Erros de execução: {estatisticas['erro_execucao']}")
