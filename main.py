@@ -10,6 +10,12 @@ from src.emissao_service import (
 
 from src.historico_view_service import consultar_historico
 
+from src.paths import (
+    PASTA_CERTIDOES_EMITIDAS,
+    PASTA_RELATORIOS,
+    PASTA_EVIDENCIAS,
+)
+
 async def main():
 
     criar_pastas_necessarias()
@@ -32,15 +38,15 @@ async def main():
 
         elif opcao == "4":
 
-            os.startfile("certidoes_emitidas")
+            os.startfile(PASTA_CERTIDOES_EMITIDAS)
 
         elif opcao == "5":
 
-            os.startfile("relatorios")
+            os.startfile(PASTA_RELATORIOS)
 
         elif opcao == "6":
 
-            os.startfile("evidencias")
+            os.startfile(PASTA_EVIDENCIAS)
 
         elif opcao == "7":
 
