@@ -13,6 +13,11 @@ from src.terminal_service import (
 
 from src.mensagens import MSG_NENHUM_REGISTRO_ENCONTRADO
 
+from src.input_validator import (
+    entrada_eh_numero,
+    entrada_confirmada,
+)
+
 def exibir_registros_historico(registros):
     for registro in registros:
         exibir_mensagem(
@@ -61,7 +66,7 @@ def consultar_historico():
 
     quantidade = 10
     
-    if quantidade_texto.strip().isdigit():
+    if entrada_eh_numero(quantidade_texto):
         quantidade = int(quantidade_texto)
 
     exibir_registros_historico(historico[-quantidade:])
@@ -70,5 +75,5 @@ def consultar_historico():
         "\nDeseja exportar este histórico para CSV? (s/n): "
     )
 
-    if exportar.strip().lower() == "s":
+    if entrada_confirmada(exportar):
         exportar_historico_filtrado(historico[-quantidade:])
