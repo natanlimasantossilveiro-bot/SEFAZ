@@ -10,6 +10,8 @@ from src.terminal_service import (
     exibir_mensagem,
 )
 
+from src.mensagens import MSG_NENHUM_REGISTRO_ENCONTRADO
+
 def exibir_registros_historico(registros):
     for registro in registros:
         exibir_mensagem(
@@ -32,7 +34,7 @@ def consultar_historico():
     exibir_titulo("HISTÓRICO DE EMISSÕES")
 
     if not historico:
-        exibir_mensagem("Nenhum registro encontrado.")
+        exibir_mensagem(MSG_NENHUM_REGISTRO_ENCONTRADO)
         return
     
     filtro_documento = input(
