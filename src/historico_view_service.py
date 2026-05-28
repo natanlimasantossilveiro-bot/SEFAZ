@@ -8,6 +8,7 @@ from src.historico_service import (
 from src.terminal_service import (
     exibir_titulo,
     exibir_mensagem,
+    solicitar_entrada,
 )
 
 from src.mensagens import MSG_NENHUM_REGISTRO_ENCONTRADO
@@ -37,7 +38,7 @@ def consultar_historico():
         exibir_mensagem(MSG_NENHUM_REGISTRO_ENCONTRADO)
         return
     
-    filtro_documento = input(
+    filtro_documento = solicitar_entrada(
         "Filtrar por CPF/CNPJ (ENTER para todos): "
     )
 
@@ -54,7 +55,7 @@ def consultar_historico():
     exibir_mensagem(f"Documentos inválidos: {estatisticas['documento_invalido']}")
     exibir_mensagem(f"Resultados indefinidos: {estatisticas['resultado_indefinido']}")
 
-    quantidade_texto = input(
+    quantidade_texto = solicitar_entrada(
         "\nQuantos registros deseja visualizar? (padrão 10): "
     )
 
@@ -65,7 +66,7 @@ def consultar_historico():
 
     exibir_registros_historico(historico[-quantidade:])
 
-    exportar = input(
+    exportar = solicitar_entrada(
         "\nDeseja exportar este histórico para CSV? (s/n): "
     )
 
