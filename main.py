@@ -16,6 +16,11 @@ from src.paths import (
     PASTA_EVIDENCIAS,
 )
 
+from src.mensagens import (
+    MSG_SISTEMA_ENCERRADO,
+    MSG_OPCAO_INVALIDA,
+)
+
 async def main():
 
     criar_pastas_necessarias()
@@ -50,12 +55,12 @@ async def main():
 
         elif opcao == "7":
 
-            log_sucesso("Sistema encerrado.")
+            log_sucesso(MSG_SISTEMA_ENCERRADO)
             break
 
         else:
 
-            log_erro("Opção inválida.")
+            log_erro(MSG_OPCAO_INVALIDA)
 
 if __name__ == "__main__":
     asyncio.run(main())

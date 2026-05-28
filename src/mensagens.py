@@ -17,3 +17,8 @@ MSG_CERTIDAO_ENCONTRADA = "Certidão encontrada para o documento informado."
 MSG_EVIDENCIA_SALVA_SUCESSO = "Evidência salva com sucesso!"
 MSG_PDF_NAO_ENCONTRADO = "Nenhum PDF encontrado na pasta Downloads."
 MSG_PDF_MOVIDO_SUCESSO = "PDF movido com sucesso!"
+
+# Terminal
+MSG_SISTEMA_ENCERRADO = "Sistema encerrado."
+MSG_OPCAO_INVALIDA = "Opção inválida."
+MSG_NENHUM_REGISTRO_ENCONTRADO = "Nenhum registro encontrado."
