@@ -4,7 +4,7 @@ import random
 
 from src.pdf_service import mover_pdf_mais_recente
 from src.evidencia_service import salvar_evidencia
-from src.utils import log_info, log_sucesso, log_alerta, log_erro, log_debug
+from src.utils import log_info, log_sucesso, log_alerta, log_debug
 
 from src.config import (
     URL_SEFAZ,
@@ -37,6 +37,8 @@ from src.mensagens import (
 )
 
 from src.resultado_factory import criar_resultado
+
+from src.exception_service import tratar_erro_padrao
 
 
 async def aceitar_cookies(page):
@@ -144,7 +146,11 @@ async def abrir_pagina_sefaz(documento):
         return registro
     
     except Exception as erro:
-        log_erro(f"Erro inesperado durante a emissão na SEFAZ: {erro}")
+        
+        tratar_erro_padrao(
+            erro,
+            contexto="Erro inesperado durante a emissão na SEFAZ"
+        )
 
         return criar_resultado(
             documento=documento,

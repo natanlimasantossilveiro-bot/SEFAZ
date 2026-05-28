@@ -19,7 +19,6 @@ from src.utils import (
     limpar_documento, 
     validar_documento,
     log_info,
-    log_erro,
     log_alerta,
 )
 
@@ -44,6 +43,8 @@ from src.paths import ARQUIVO_PLANILHA_DOCUMENTOS
 
 from src.resultado_factory import criar_resultado
 
+from src.exception_service import tratar_erro_padrao
+
 async def emitir_com_retry(documento, total_tentativas=3):
 
     for tentativa in range(1, total_tentativas + 1):
@@ -62,7 +63,10 @@ async def emitir_com_retry(documento, total_tentativas=3):
             return resultado
         
         except Exception as erro:
-            log_erro(f"Erro na tentativa {tentativa} para o documento {documento}: {erro}")
+            tratar_erro_padrao(
+                erro,
+                contexto=f"Erro na tentativa {tentativa} para o documento {documento}"
+            )
 
             if tentativa < total_tentativas:
                 tempo_espera = random.randint(TEMPO_RETRY_MINIMO, TEMPO_RETRY_MAXIMO)
