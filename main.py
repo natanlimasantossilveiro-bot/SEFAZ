@@ -21,6 +21,10 @@ from src.mensagens import (
     MSG_OPCAO_INVALIDA,
 )
 
+from src.input_validator import opcao_esta_no_intervalo
+
+OPCOES_VALIDAS_MENU = ["1", "2", "3", "4", "5", "6", "7"]
+
 async def main():
 
     criar_pastas_necessarias()
@@ -28,6 +32,10 @@ async def main():
     while True:
 
         opcao = exibir_menu()
+
+        if not opcao_esta_no_intervalo(opcao, OPCOES_VALIDAS_MENU):
+            log_erro(MSG_OPCAO_INVALIDA)
+            continue
 
         if opcao == "1":
 
@@ -57,10 +65,6 @@ async def main():
 
             log_sucesso(MSG_SISTEMA_ENCERRADO)
             break
-
-        else:
-
-            log_erro(MSG_OPCAO_INVALIDA)
 
 if __name__ == "__main__":
     asyncio.run(main())
