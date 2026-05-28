@@ -1,6 +1,7 @@
 from src.terminal_service import (
     exibir_titulo,
     exibir_mensagem,
+    solicitar_entrada,
 )
 
 def exibir_menu():
@@ -15,4 +16,4 @@ def exibir_menu():
     exibir_mensagem("6- Abrir pasta de evidências")
     exibir_mensagem("7- Sair")
 
-    return input("\nEscolha uma opção: ")
+    return solicitar_entrada("\nEscolha uma opção: ")

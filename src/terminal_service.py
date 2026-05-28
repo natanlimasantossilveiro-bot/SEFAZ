@@ -8,3 +8,7 @@ def exibir_mensagem(texto):
 
 def exibir_linha_em_branco():
     print()
+
+
+def solicitar_entrada(texto):
+    return input(texto)
