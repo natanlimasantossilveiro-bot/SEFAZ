@@ -23,7 +23,7 @@ from src.mensagens import (
 
 from src.input_validator import opcao_esta_no_intervalo
 
-OPCOES_VALIDAS_MENU = ["1", "2", "3", "4", "5", "6", "7"]
+from src.menu_options import OPCOES_VALIDAS_MENU
 
 async def main():
 
