@@ -45,6 +45,11 @@ from src.resultado_factory import criar_resultado
 
 from src.exception_service import tratar_erro_padrao
 
+from src.terminal_service import (
+    exibir_titulo,
+    exibir_mensagem
+)
+
 async def emitir_com_retry(documento, total_tentativas=3):
 
     for tentativa in range(1, total_tentativas + 1):
@@ -85,13 +90,13 @@ async def emitir_por_planilha():
 
     documentos = ler_documentos_planilha(ARQUIVO_PLANILHA_DOCUMENTOS)
 
-    print("\n=== DOCUMENTOS ENCONTRADOS ===\n")
+    exibir_titulo("DOCUMENTOS ENCONTRADOS")
 
     registros = []
 
     for item in documentos:
 
-        print(f"\nProcessando documento: {item['documento']}")
+        exibir_mensagem(f"\nProcessando documento: {item['documento']}")
 
         if not item["valido"]:
 
@@ -128,10 +133,10 @@ async def emitir_por_planilha():
 
         await asyncio.sleep(tempo_espera)
 
-    print("\n=== RESULTADOS FINAIS ===\n")
+    exibir_titulo("RESULTADOS FINAIS")
 
     for registro in registros:
-        print(registro)
+        exibir_mensagem(registro)
 
     log_info("Gerando relatório consolidado...")
 
@@ -154,8 +159,8 @@ async def emitir_manual():
             mensagem=MSG_DOCUMENTO_INVALIDO_MANUAL,
         )
 
-        print("\n=== RESULTADO DA EMISSÃO ===\n")
-        print(resultado)
+        exibir_titulo("RESULTADO DA EMISSÃO")
+        exibir_mensagem(resultado)
 
         gerar_relatorio_emissao([resultado])
 
@@ -165,8 +170,8 @@ async def emitir_manual():
     
     resultado = await emitir_com_retry(documento)
 
-    print("\n=== RESULTADO DA EMISSÃO ===\n")
-    print(resultado)
+    exibir_titulo("RESULTADO DA EMISSÃO")
+    exibir_mensagem(resultado)
 
     if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
         log_alerta(MSG_BLOQUEIO_CONSULTAS)
