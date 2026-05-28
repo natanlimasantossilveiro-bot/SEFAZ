@@ -1,11 +1,21 @@
+from src.mensagens import (
+    MSG_MENU_EMISSAO_MANUAL,
+    MSG_MENU_EMISSAO_PLANILHA,
+    MSG_MENU_CONSULTAR_HISTORICO,
+    MSG_MENU_ABRIR_PDFS,
+    MSG_MENU_ABRIR_RELATORIOS,
+    MSG_MENU_ABRIR_EVIDENCIAS,
+    MSG_MENU_SAIR,
+)
+
 OPCOES_MENU = [
-    ("1", "Emitir certidão manual"),
-    ("2", "Emitir certidões por planilha"),
-    ("3", "Consultar histórico"),
-    ("4", "Abrir pasta de PDFs"),
-    ("5", "Abrir pasta de relatórios"),
-    ("6", "Abrir pasta de evidências"),
-    ("7", "Sair"),
+    ("1", MSG_MENU_EMISSAO_MANUAL),
+    ("2", MSG_MENU_EMISSAO_PLANILHA),
+    ("3", MSG_MENU_CONSULTAR_HISTORICO),
+    ("4", MSG_MENU_ABRIR_PDFS),
+    ("5", MSG_MENU_ABRIR_RELATORIOS),
+    ("6", MSG_MENU_ABRIR_EVIDENCIAS),
+    ("7", MSG_MENU_SAIR),
 ]
 
 
