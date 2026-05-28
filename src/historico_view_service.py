@@ -5,9 +5,14 @@ from src.historico_service import (
     gerar_estatisticas_historico,
 )
 
+from src.terminal_service import (
+    exibir_titulo,
+    exibir_mensagem,
+)
+
 def exibir_registros_historico(registros):
     for registro in registros:
-        print(
+        exibir_mensagem(
             f"\n{registro['data_hora']} | "
             f"{registro['documento']} | "
             f"{registro['status']} | "
@@ -15,19 +20,19 @@ def exibir_registros_historico(registros):
         )
 
         if registro.get("caminho_pdf"):
-            print(f"PDF: {registro['caminho_pdf']}")
+            exibir_mensagem(f"PDF: {registro['caminho_pdf']}")
 
         if registro.get("caminho_evidencia"):
-            print(f"Evidência: {registro['caminho_evidencia']}")
+            exibir_mensagem(f"Evidência: {registro['caminho_evidencia']}")
 
 def consultar_historico():
 
     historico = listar_historico()
 
-    print("\n=== HISTÓRICO DE EMISSÕES ===\n")
+    exibir_titulo("HISTÓRICO DE EMISSÕES")
 
     if not historico:
-        print("Nenhum registro encontrado.")
+        exibir_mensagem("Nenhum registro encontrado.")
         return
     
     filtro_documento = input(
@@ -39,13 +44,13 @@ def consultar_historico():
 
     estatisticas = gerar_estatisticas_historico(historico)
 
-    print("\n=== Resumo ===")
-    print(f"Total de registros: {estatisticas['total']}")
-    print(f"Sucessos: {estatisticas['sucesso']}")
-    print(f"Erros de execução: {estatisticas['erro_execucao']}")
-    print(f"Bloqueios: {estatisticas['bloqueio_automacao']}")
-    print(f"Documentos inválidos: {estatisticas['documento_invalido']}")
-    print(f"Resultados indefinidos: {estatisticas['resultado_indefinido']}")
+    exibir_titulo("Resumo")
+    exibir_mensagem(f"Total de registros: {estatisticas['total']}")
+    exibir_mensagem(f"Sucessos: {estatisticas['sucesso']}")
+    exibir_mensagem(f"Erros de execução: {estatisticas['erro_execucao']}")
+    exibir_mensagem(f"Bloqueios: {estatisticas['bloqueio_automacao']}")
+    exibir_mensagem(f"Documentos inválidos: {estatisticas['documento_invalido']}")
+    exibir_mensagem(f"Resultados indefinidos: {estatisticas['resultado_indefinido']}")
 
     quantidade_texto = input(
         "\nQuantos registros deseja visualizar? (padrão 10): "
