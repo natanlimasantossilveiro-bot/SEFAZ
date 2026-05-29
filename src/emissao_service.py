@@ -55,7 +55,6 @@ from src.exception_service import tratar_erro_padrao
 from src.terminal_service import (
     exibir_titulo,
     exibir_mensagem,
-    solicitar_entrada,
 )
 
 async def emitir_com_retry(documento, total_tentativas=3):
@@ -150,10 +149,8 @@ async def emitir_por_planilha():
 
     salvar_historico(registros)
 
-async def emitir_manual():
-
-    documento = solicitar_entrada("Informe o CPF ou CNPJ: ")
-
+async def emitir_documento_manual(documento):
+    
     documento = limpar_documento(documento)
 
     if not validar_documento(documento):
@@ -172,7 +169,7 @@ async def emitir_manual():
 
         salvar_historico([resultado])
 
-        return
+        return resultado
     
     resultado = await emitir_com_retry(documento)
 
@@ -186,3 +183,5 @@ async def emitir_manual():
     gerar_relatorio_emissao([resultado])
 
     salvar_historico([resultado])
+
+    return resultado

@@ -23,6 +23,7 @@ MSG_GERANDO_RELATORIO_CONSOLIDADO = "Gerando relatório consolidado..."
 MSG_SISTEMA_ENCERRADO = "Sistema encerrado."
 MSG_OPCAO_INVALIDA = "Opção inválida."
 MSG_NENHUM_REGISTRO_ENCONTRADO = "Nenhum registro encontrado."
+MSG_SOLICITAR_DOCUMENTO = "Informe o CPF ou CNPJ: "
 
 # Espera / Retry
 MSG_AGUARDANDO_RETRY = (
