@@ -13,6 +13,10 @@ from src.paths import PASTA_CERTIDOES_EMITIDAS
 from src.mensagens import (
     MSG_PDF_NAO_ENCONTRADO,
     MSG_PDF_MOVIDO_SUCESSO,
+    MSG_PDF_NAO_DISPONIVEL_TENTATIVA,
+    MSG_PDF_AINDA_BAIXANDO_TENTATIVA,
+    MSG_PDF_EM_USO_TENTATIVA,
+    MSG_DESTINO_ARQUIVO,
 )
 
 PASTA_DOWNLOADS = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -49,12 +53,12 @@ def mover_pdf_mais_recente(documento):
     for tentativa in range(1, 21):
         try:
             if not os.path.exists(pdf_mais_recente):
-                log_alerta(f"PDF ainda não está disponível. Tentativa {tentativa}/20...")
+                log_alerta(MSG_PDF_NAO_DISPONIVEL_TENTATIVA.format(tentativa=tentativa, total=20))
                 time.sleep(1)
                 continue
 
             if not arquivo_esta_pronto(pdf_mais_recente):
-                log_alerta(f"PDF ainda está baixando. Tentativa {tentativa}/20")
+                log_alerta(MSG_PDF_AINDA_BAIXANDO_TENTATIVA.format(tentativa=tentativa, total=20))
                 time.sleep(1)
                 continue
 
@@ -62,16 +66,20 @@ def mover_pdf_mais_recente(documento):
             break
 
         except PermissionError:
-            log_alerta(f"PDF ainda está em uso. Tentativa {tentativa}/20...")
+            log_alerta(MSG_PDF_EM_USO_TENTATIVA.format(tentativa=tentativa, total=20))
             time.sleep(1)
 
     else:
-        raise PermissionError(
-            f"Não foi possível mover o PDF após várias tentativas: {pdf_mais_recente}"
-        )
+        try:
+            shutil.copy2(pdf_mais_recente, destino)
+            log_alerta("PDF não pôde ser movido, mas foi copiado com sucesso.")
+        except PermissionError:
+            raise PermissionError(
+                f"Não foi possível mover nem copiar o PDF após várias tentativas: {pdf_mais_recente}"
+            )
 
     log_sucesso(MSG_PDF_MOVIDO_SUCESSO)
 
-    log_sucesso(f"Destino: {destino}")
+    log_sucesso(MSG_DESTINO_ARQUIVO.format(destino=destino))
 
     return destino

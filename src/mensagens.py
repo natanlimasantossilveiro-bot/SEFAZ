@@ -54,3 +54,9 @@ MSG_MENU_ABRIR_PDFS = "Abrir pasta de PDFs"
 MSG_MENU_ABRIR_RELATORIOS = "Abrir pasta de relatórios"
 MSG_MENU_ABRIR_EVIDENCIAS = "Abrir pasta de evidências"
 MSG_MENU_SAIR = "Sair"
+
+# PDF
+MSG_PDF_NAO_DISPONIVEL_TENTATIVA = "PDF ainda não está disponível. Tentativa {tentativa}/{total}..."
+MSG_PDF_AINDA_BAIXANDO_TENTATIVA = "PDF ainda não está baixando. Tentativa {tentativa}/{total}..."
+MSG_PDF_EM_USO_TENTATIVA = "PDF ainda está em uso. Tentativa {tentativa}/{total}..."
+MSG_DESTINO_ARQUIVO = "Destino: {destino}"
