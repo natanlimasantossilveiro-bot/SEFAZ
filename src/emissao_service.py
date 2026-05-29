@@ -42,7 +42,6 @@ from src.mensagens import (
     MSG_PAUSA_BLOQUEIO,
     MSG_GERANDO_RELATORIO_CONSOLIDADO,
     MSG_TITULO_DOCUMENTOS_ENCONTRADOS,
-    MSG_TITULO_RESULTADOS_FINAIS,
 )
 
 from src.paths import ARQUIVO_PLANILHA_DOCUMENTOS
@@ -137,16 +136,13 @@ async def emitir_por_planilha():
 
         await asyncio.sleep(tempo_espera)
 
-    exibir_titulo(MSG_TITULO_RESULTADOS_FINAIS)
-
-    for registro in registros:
-        exibir_mensagem(registro)
-
     log_info(MSG_GERANDO_RELATORIO_CONSOLIDADO)
 
     gerar_relatorio_emissao(registros)
 
     salvar_historico(registros)
+
+    return registros
 
 async def emitir_documento_manual(documento):
     

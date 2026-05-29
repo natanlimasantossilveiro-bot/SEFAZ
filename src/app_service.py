@@ -22,6 +22,7 @@ from src.terminal_service import (
 from src.mensagens import (
     MSG_SOLICITAR_DOCUMENTO,
     MSG_TITULO_RESULTADO_EMISSAO,
+    MSG_TITULO_RESULTADOS_FINAIS,
 )
 
 async def executar_emissao_manual():
@@ -37,8 +38,15 @@ async def executar_emissao_manual():
 
 
 async def executar_emissao_por_planilha():
-    await emitir_por_planilha()
+    
+    registros = await emitir_por_planilha()
 
+    exibir_titulo(MSG_TITULO_RESULTADOS_FINAIS)
+
+    for registro in registros:
+        exibir_mensagem(registro)
+
+    return registros
 
 def executar_consulta_historico():
     consultar_historico()
