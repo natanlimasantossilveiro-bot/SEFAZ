@@ -61,3 +61,4 @@ MSG_PDF_AINDA_BAIXANDO_TENTATIVA = "PDF ainda não está baixando. Tentativa {te
 MSG_PDF_EM_USO_TENTATIVA = "PDF ainda está em uso. Tentativa {tentativa}/{total}..."
 MSG_DESTINO_ARQUIVO = "Destino: {destino}"
 MSG_PDF_COPIADO_FALLBACK_SUCESSO = "PDF não pôde ser movido, mas foi copiado com sucesso."
+MSG_PDF_COPIADO_SUCESSO = "PDF copiado com sucesso!"
