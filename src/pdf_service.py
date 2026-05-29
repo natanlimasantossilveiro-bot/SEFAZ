@@ -17,6 +17,7 @@ from src.mensagens import (
     MSG_PDF_AINDA_BAIXANDO_TENTATIVA,
     MSG_PDF_EM_USO_TENTATIVA,
     MSG_DESTINO_ARQUIVO,
+    MSG_PDF_COPIADO_FALLBACK_SUCESSO,
 )
 
 PASTA_DOWNLOADS = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -72,7 +73,7 @@ def mover_pdf_mais_recente(documento):
     else:
         try:
             shutil.copy2(pdf_mais_recente, destino)
-            log_alerta("PDF não pôde ser movido, mas foi copiado com sucesso.")
+            log_alerta(MSG_PDF_COPIADO_FALLBACK_SUCESSO)
         except PermissionError:
             raise PermissionError(
                 f"Não foi possível mover nem copiar o PDF após várias tentativas: {pdf_mais_recente}"
