@@ -17,6 +17,13 @@ from src.mensagens import (
 
 PASTA_DOWNLOADS = os.path.join(os.path.expanduser("~"), "Downloads")
 
+def arquivo_esta_pronto(caminho_arquivo):
+    tamanho_inicial = os.path.getsize(caminho_arquivo)
+    time.sleep(1)
+    tamanho_final = os.path.getsize(caminho_arquivo)
+
+    return tamanho_inicial == tamanho_final
+
 def mover_pdf_mais_recente(documento):
 
     arquivos_pdf = [
@@ -39,13 +46,23 @@ def mover_pdf_mais_recente(documento):
 
     destino = os.path.join(PASTA_CERTIDOES_EMITIDAS, nome_novo)
 
-    for tentativa in range(1, 11):
+    for tentativa in range(1, 21):
         try:
+            if not os.path.exists(pdf_mais_recente):
+                log_alerta(f"PDF ainda não está disponível. Tentativa {tentativa}/20...")
+                time.sleep(1)
+                continue
+
+            if not arquivo_esta_pronto(pdf_mais_recente):
+                log_alerta(f"PDF ainda está baixando. Tentativa {tentativa}/20")
+                time.sleep(1)
+                continue
+
             shutil.move(pdf_mais_recente, destino)
             break
 
         except PermissionError:
-            log_alerta(f"PDF ainda está em uso. Tentativa {tentativa}/10...")
+            log_alerta(f"PDF ainda está em uso. Tentativa {tentativa}/20...")
             time.sleep(1)
 
     else:
