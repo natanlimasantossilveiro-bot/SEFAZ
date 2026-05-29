@@ -13,15 +13,27 @@ from src.paths import (
     PASTA_EVIDENCIAS,
 )
 
-from src.terminal_service import solicitar_entrada
+from src.terminal_service import (
+    solicitar_entrada,
+    exibir_titulo,
+    exibir_mensagem
+)
 
-from src.mensagens import MSG_SOLICITAR_DOCUMENTO
+from src.mensagens import (
+    MSG_SOLICITAR_DOCUMENTO,
+    MSG_TITULO_RESULTADO_EMISSAO,
+)
 
 async def executar_emissao_manual():
     
     documento = solicitar_entrada(MSG_SOLICITAR_DOCUMENTO)
 
-    return await emitir_documento_manual(documento)
+    resultado = await emitir_documento_manual(documento)
+
+    exibir_titulo(MSG_TITULO_RESULTADO_EMISSAO)
+    exibir_mensagem(resultado)
+
+    return resultado
 
 
 async def executar_emissao_por_planilha():

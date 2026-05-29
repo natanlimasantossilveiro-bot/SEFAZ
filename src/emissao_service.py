@@ -43,7 +43,6 @@ from src.mensagens import (
     MSG_GERANDO_RELATORIO_CONSOLIDADO,
     MSG_TITULO_DOCUMENTOS_ENCONTRADOS,
     MSG_TITULO_RESULTADOS_FINAIS,
-    MSG_TITULO_RESULTADO_EMISSAO,
 )
 
 from src.paths import ARQUIVO_PLANILHA_DOCUMENTOS
@@ -162,9 +161,6 @@ async def emitir_documento_manual(documento):
             mensagem=MSG_DOCUMENTO_INVALIDO_MANUAL,
         )
 
-        exibir_titulo(MSG_TITULO_RESULTADO_EMISSAO)
-        exibir_mensagem(resultado)
-
         gerar_relatorio_emissao([resultado])
 
         salvar_historico([resultado])
@@ -172,9 +168,6 @@ async def emitir_documento_manual(documento):
         return resultado
     
     resultado = await emitir_com_retry(documento)
-
-    exibir_titulo(MSG_TITULO_RESULTADO_EMISSAO)
-    exibir_mensagem(resultado)
 
     if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
         log_alerta(MSG_BLOQUEIO_CONSULTAS)
