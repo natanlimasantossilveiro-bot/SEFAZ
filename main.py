@@ -1,20 +1,16 @@
 import asyncio
-import os
 
+
+from src.app_service import (
+    executar_emissao_manual,
+    executar_emissao_por_planilha,
+    executar_consulta_historico,
+    abrir_pasta_certidoes,
+    abrir_pasta_relatorios,
+    abrir_pasta_evidencias,
+)
 from src.menu_service import exibir_menu
 from src.utils import criar_pastas_necessarias, log_sucesso, log_erro
-from src.emissao_service import (
-    emitir_manual,
-    emitir_por_planilha,
-)
-
-from src.historico_view_service import consultar_historico
-
-from src.paths import (
-    PASTA_CERTIDOES_EMITIDAS,
-    PASTA_RELATORIOS,
-    PASTA_EVIDENCIAS,
-)
 
 from src.mensagens import (
     MSG_SISTEMA_ENCERRADO,
@@ -39,27 +35,27 @@ async def main():
 
         if opcao == "1":
 
-            await emitir_manual()
+            await executar_emissao_manual()
 
         elif opcao == "2":
 
-            await emitir_por_planilha()
+            await executar_emissao_por_planilha()
 
         elif opcao == "3":
 
-            consultar_historico()
+            executar_consulta_historico()
 
         elif opcao == "4":
 
-            os.startfile(PASTA_CERTIDOES_EMITIDAS)
+            abrir_pasta_certidoes()
 
         elif opcao == "5":
 
-            os.startfile(PASTA_RELATORIOS)
+            abrir_pasta_relatorios()
 
         elif opcao == "6":
 
-            os.startfile(PASTA_EVIDENCIAS)
+            abrir_pasta_evidencias()
 
         elif opcao == "7":
 
