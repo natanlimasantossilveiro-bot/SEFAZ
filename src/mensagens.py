@@ -18,6 +18,8 @@ MSG_EVIDENCIA_SALVA_SUCESSO = "Evidência salva com sucesso!"
 MSG_PDF_NAO_ENCONTRADO = "Nenhum PDF encontrado na pasta Downloads."
 MSG_PDF_MOVIDO_SUCESSO = "PDF movido com sucesso!"
 MSG_GERANDO_RELATORIO_CONSOLIDADO = "Gerando relatório consolidado..."
+MSG_TENTATIVA_EMISSAO_DOCUMENTO = "Tentativa {tentativa}/{total_tentativas} para o documento {documento}"
+MSG_FALHA_APOS_TENTATIVAS = "Falha após {total_tentativas} tentativas."
 
 # Terminal
 MSG_SISTEMA_ENCERRADO = "Sistema encerrado."

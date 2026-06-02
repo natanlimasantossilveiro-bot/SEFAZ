@@ -43,6 +43,8 @@ from src.mensagens import (
     MSG_PAUSA_BLOQUEIO,
     MSG_GERANDO_RELATORIO_CONSOLIDADO,
     MSG_TITULO_DOCUMENTOS_ENCONTRADOS,
+    MSG_TENTATIVA_EMISSAO_DOCUMENTO,
+    MSG_FALHA_APOS_TENTATIVAS,
 )
 
 from src.paths import ARQUIVO_PLANILHA_DOCUMENTOS
@@ -64,7 +66,13 @@ async def emitir_com_retry(
     for tentativa in range(1, total_tentativas + 1):
 
         try:
-            log_info(f"Tentativa {tentativa}/{total_tentativas} para o documento {documento}")
+            log_info(
+                MSG_TENTATIVA_EMISSAO_DOCUMENTO.format(
+                    tentativa=tentativa,
+                    total_tentativas=total_tentativas,
+                    documento=documento,
+                )
+            )
 
             resultado = await asyncio.wait_for(
                 abrir_pagina_sefaz(documento),
@@ -92,7 +100,9 @@ async def emitir_com_retry(
     return criar_resultado(
         documento=documento,
         status=STATUS_ERRO_EXECUCAO,
-        mensagem=f"Falha após {total_tentativas} tentativas.",
+        mensagem=MSG_FALHA_APOS_TENTATIVAS.format(
+            total_tentativas=total_tentativas,
+        ),
     )
         
 async def emitir_por_planilha():
