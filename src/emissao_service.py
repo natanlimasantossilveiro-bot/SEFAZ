@@ -13,6 +13,7 @@ from src.config import (
     TEMPO_RETRY_MINIMO,
     TEMPO_RETRY_MAXIMO,
     TEMPO_PAUSA_BLOQUEIO,
+    TOTAL_TENTATIVAS_EMISSAO,
 )
 
 from src.utils import (
@@ -55,7 +56,10 @@ from src.terminal_service import (
     exibir_mensagem,
 )
 
-async def emitir_com_retry(documento, total_tentativas=3):
+async def emitir_com_retry(
+    documento,
+    total_tentativas=TOTAL_TENTATIVAS_EMISSAO,
+):
 
     for tentativa in range(1, total_tentativas + 1):
 
