@@ -45,6 +45,7 @@ from src.mensagens import (
     MSG_TITULO_DOCUMENTOS_ENCONTRADOS,
     MSG_TENTATIVA_EMISSAO_DOCUMENTO,
     MSG_FALHA_APOS_TENTATIVAS,
+    MSG_ERRO_TENTATIVA_EMISSAO,
 )
 
 from src.paths import ARQUIVO_PLANILHA_DOCUMENTOS
@@ -87,7 +88,10 @@ async def emitir_com_retry(
         except Exception as erro:
             tratar_erro_padrao(
                 erro,
-                contexto=f"Erro na tentativa {tentativa} para o documento {documento}"
+                contexto=MSG_ERRO_TENTATIVA_EMISSAO.format(
+                    tentativa=tentativa,
+                    documento=documento,
+                )
             )
 
             if tentativa < total_tentativas:

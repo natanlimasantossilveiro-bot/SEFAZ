@@ -20,6 +20,7 @@ MSG_PDF_MOVIDO_SUCESSO = "PDF movido com sucesso!"
 MSG_GERANDO_RELATORIO_CONSOLIDADO = "Gerando relatório consolidado..."
 MSG_TENTATIVA_EMISSAO_DOCUMENTO = "Tentativa {tentativa}/{total_tentativas} para o documento {documento}"
 MSG_FALHA_APOS_TENTATIVAS = "Falha após {total_tentativas} tentativas."
+MSG_ERRO_TENTATIVA_EMISSAO = "Erro na tentativa {tentativa} para o documento {documento}"
 
 # Terminal
 MSG_SISTEMA_ENCERRADO = "Sistema encerrado."
