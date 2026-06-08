@@ -69,3 +69,19 @@ MSG_PDF_COPIADO_SUCESSO = "PDF copiado com sucesso!"
 MSG_PDF_FALHA_MOVE_E_COPIA = (
     "Não foi possível mover nem copiar o PDF após várias tentativas: {pdf}"
 )
+
+# EMISSAO_SEFAZ
+MSG_COOKIES_ACEITOS = "Cookies aceitos com sucesso!"
+MSG_COOKIES_NAO_ENCONTRADOS = "Banner de cookies não encontrado ou já aceito."
+MSG_DOCUMENTO_PREENCHIDO_SUCESSO = "Documento preenchido com sucesso!"
+MSG_BOTAO_EMITIR_CLICADO_SUCESSO = "Botão emitir clicado com sucesso!"
+MSG_URL_APOS_EMITIR = "URL após emitir: {url}"
+MSG_RESULTADO_EMISSAO_LOG = "Resultado da emissão: {resultado}"
+MSG_PAGINA_SEFAZ_PROCESSADA = "Página da SEFAZ processada com sucesso!"
+MSG_URL_ATUAL = "URL atual: {url}"
+MSG_ERRO_INESPERADO_CONTEXTO_SEFAZ = "Erro inesperado durante a emissão na SEFAZ"
+MSG_CPF_INVALIDO_INFORMADO = "CPF inválido informado."
+MSG_CNPJ_INVALIDO_INFORMADO = "CNPJ inválido informado."
+MSG_DEBUG_TEXTO_PAGINA = "DEBUG TEXTO DA PÁGINA:"
+MSG_DOWNLOAD_PDF_INICIADO = "Download do PDF iniciado com sucesso!"
+MSG_BOTAO_BAIXAR_PDF_NAO_ENCONTRADO = "Botão de baixar PDF não encontrado."

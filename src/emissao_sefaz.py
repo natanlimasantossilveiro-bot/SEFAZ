@@ -34,6 +34,20 @@ from src.mensagens import (
     MSG_RESULTADO_INDEFINIDO,
     MSG_CERTIDAO_ENCONTRADA,
     MSG_BLOQUEIO_CONSULTAS,
+    MSG_COOKIES_ACEITOS,
+    MSG_COOKIES_NAO_ENCONTRADOS,
+    MSG_DOCUMENTO_PREENCHIDO_SUCESSO,
+    MSG_BOTAO_EMITIR_CLICADO_SUCESSO,
+    MSG_URL_APOS_EMITIR,
+    MSG_RESULTADO_EMISSAO_LOG,
+    MSG_PAGINA_SEFAZ_PROCESSADA,
+    MSG_URL_ATUAL,
+    MSG_ERRO_INESPERADO_CONTEXTO_SEFAZ,
+    MSG_CPF_INVALIDO_INFORMADO,
+    MSG_CNPJ_INVALIDO_INFORMADO,
+    MSG_DEBUG_TEXTO_PAGINA,
+    MSG_DOWNLOAD_PDF_INICIADO,
+    MSG_BOTAO_BAIXAR_PDF_NAO_ENCONTRADO,
 )
 
 from src.resultado_factory import criar_resultado
@@ -50,10 +64,10 @@ async def aceitar_cookies(page):
 
         await page.sleep(TEMPO_APOS_COOKIES)
 
-        log_sucesso("Cookies aceitos com sucesso!")
+        log_sucesso(MSG_COOKIES_ACEITOS)
 
     except Exception:
-        log_alerta("Banner de cookies não encontrado ou já aceito.")
+        log_alerta(MSG_COOKIES_NAO_ENCONTRADOS)
 
 
 async def preencher_documento(page, documento):
@@ -72,7 +86,7 @@ async def preencher_documento(page, documento):
 
     await page.sleep(TEMPO_APOS_PREENCHER_DOCUMENTO)
 
-    log_sucesso("Documento preenchido com sucesso!")
+    log_sucesso(MSG_DOCUMENTO_PREENCHIDO_SUCESSO)
 
 
 async def clicar_botao_emitir(page):
@@ -83,7 +97,7 @@ async def clicar_botao_emitir(page):
 
     await page.sleep(TEMPO_APOS_CLICAR_EMITIR)
 
-    log_sucesso("Botão emitir clicado com sucesso!")
+    log_sucesso(MSG_BOTAO_EMITIR_CLICADO_SUCESSO)
 
 
 async def abrir_pagina_sefaz(documento):
@@ -104,7 +118,7 @@ async def abrir_pagina_sefaz(documento):
 
         await clicar_botao_emitir(page)
 
-        log_info(f"URL após emitir: {page.url}")
+        log_info(MSG_URL_APOS_EMITIR.format(url=page.url))
 
         resultado = await verificar_resultado_emissao(page)
 
@@ -114,7 +128,7 @@ async def abrir_pagina_sefaz(documento):
             resultado["status"],
         )
 
-        log_info(f"Resultado da emissão: {resultado}")
+        log_info(MSG_RESULTADO_EMISSAO_LOG.format(resultado=resultado))
 
         caminho_pdf = None
         
@@ -138,10 +152,10 @@ async def abrir_pagina_sefaz(documento):
             caminho_evidencia=caminho_evidencia,
         )
 
-        log_sucesso("Página da SEFAZ processada com sucesso!")
+        log_sucesso(MSG_PAGINA_SEFAZ_PROCESSADA)
 
         if page:
-            log_info(f"URL atual: {page.url}")
+            log_info(MSG_URL_ATUAL.format(url=page.url))
 
         return registro
     
@@ -149,7 +163,7 @@ async def abrir_pagina_sefaz(documento):
         
         tratar_erro_padrao(
             erro,
-            contexto="Erro inesperado durante a emissão na SEFAZ"
+            contexto=MSG_ERRO_INESPERADO_CONTEXTO_SEFAZ,
         )
 
         return criar_resultado(
@@ -176,14 +190,20 @@ async def verificar_resultado_emissao(page):
 
     conteudo_pagina = await page.evaluate("document.body.innerText")
 
-    log_debug("DEBUG TEXTO DA PÁGINA:")
+    log_debug(MSG_DEBUG_TEXTO_PAGINA)
     log_debug(conteudo_pagina)
 
     if "CPF inválido" in conteudo_pagina:
-        return {"status": STATUS_DOCUMENTO_INVALIDO, "mensagem": "CPF inválido informado."}
+        return {
+            "status": STATUS_DOCUMENTO_INVALIDO,
+            "mensagem": MSG_CPF_INVALIDO_INFORMADO,
+        }
 
     if "CNPJ inválido" in conteudo_pagina:
-        return {"status": STATUS_DOCUMENTO_INVALIDO, "mensagem": "CNPJ inválido informado."}
+        return {
+            "status": STATUS_DOCUMENTO_INVALIDO,
+            "mensagem": MSG_CNPJ_INVALIDO_INFORMADO,
+        }
 
     if "Certidões recentes emitidas para o requerente" in conteudo_pagina:
         return {
@@ -198,7 +218,7 @@ async def verificar_resultado_emissao(page):
         
         return {
             "status": STATUS_BLOQUEIO_AUTOMACAO,
-            "mensagem": MSG_BLOQUEIO_CONSULTAS
+            "mensagem": MSG_BLOQUEIO_CONSULTAS,
         }
 
     return {
@@ -219,10 +239,10 @@ async def baixar_pdf(page):
         if texto and "file_save" in texto:
             await botao.click()
 
-            log_sucesso("Download do PDF iniciado com sucesso!")
+            log_sucesso(MSG_DOWNLOAD_PDF_INICIADO)
 
             await page.sleep(TEMPO_AGUARDAR_DOWNLOAD_PDF)
 
             return
 
-    log_alerta("Botão de baixar PDF não encontrado.")
+    log_alerta(MSG_BOTAO_BAIXAR_PDF_NAO_ENCONTRADO)
