@@ -1,4 +1,4 @@
-import os 
+import os
 
 from src.emissao_service import (
     emitir_documento_manual,
@@ -16,7 +16,7 @@ from src.paths import (
 from src.terminal_service import (
     solicitar_entrada,
     exibir_titulo,
-    exibir_mensagem
+    exibir_mensagem,
 )
 
 from src.mensagens import (
@@ -47,6 +47,7 @@ async def executar_emissao_por_planilha():
         exibir_mensagem(registro)
 
     return registros
+
 
 def executar_consulta_historico():
     consultar_historico()

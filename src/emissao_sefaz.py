@@ -1,4 +1,3 @@
-import asyncio
 import nodriver as uc
 import random
 
@@ -111,7 +110,7 @@ async def abrir_pagina_sefaz(documento):
         caminho_evidencia = await salvar_evidencia(
             page,
             documento,
-            resultado["status"]
+            resultado["status"],
         )
 
         log_info(f"Resultado da emissão: {resultado}")
@@ -226,8 +225,3 @@ async def baixar_pdf(page):
             return
 
     log_alerta("Botão de baixar PDF não encontrado.")
-
-
-if __name__ == "__main__":
-    documento = input("Informe o CPF ou CNPJ: ")
-    asyncio.run(abrir_pagina_sefaz(documento))

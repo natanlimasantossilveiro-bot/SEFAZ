@@ -17,7 +17,7 @@ from src.config import (
 )
 
 from src.utils import (
-    limpar_documento, 
+    limpar_documento,
     validar_documento,
     log_info,
     log_alerta,
@@ -46,6 +46,7 @@ from src.mensagens import (
     MSG_TENTATIVA_EMISSAO_DOCUMENTO,
     MSG_FALHA_APOS_TENTATIVAS,
     MSG_ERRO_TENTATIVA_EMISSAO,
+    MSG_PROCESSANDO_DOCUMENTO,
 )
 
 from src.paths import ARQUIVO_PLANILHA_DOCUMENTOS
@@ -58,6 +59,7 @@ from src.terminal_service import (
     exibir_titulo,
     exibir_mensagem,
 )
+
 
 async def emitir_com_retry(
     documento,
@@ -77,21 +79,21 @@ async def emitir_com_retry(
 
             resultado = await asyncio.wait_for(
                 abrir_pagina_sefaz(documento),
-                timeout=TIMEOUT_EMISSAO
+                timeout=TIMEOUT_EMISSAO,
             )
 
             if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
                 log_alerta(MSG_BLOQUEIO_DETECTADO_RETRY)
 
             return resultado
-        
+
         except Exception as erro:
             tratar_erro_padrao(
                 erro,
                 contexto=MSG_ERRO_TENTATIVA_EMISSAO.format(
                     tentativa=tentativa,
                     documento=documento,
-                )
+                ),
             )
 
             if tentativa < total_tentativas:
@@ -108,7 +110,8 @@ async def emitir_com_retry(
             total_tentativas=total_tentativas,
         ),
     )
-        
+
+
 async def emitir_por_planilha():
 
     documentos = ler_documentos_planilha(ARQUIVO_PLANILHA_DOCUMENTOS)
@@ -119,7 +122,7 @@ async def emitir_por_planilha():
 
     for item in documentos:
 
-        exibir_mensagem(f"\nProcessando documento: {item['documento']}")
+        exibir_mensagem(MSG_PROCESSANDO_DOCUMENTO.format(documento=item["documento"]))
 
         if not item["valido"]:
 
@@ -134,13 +137,13 @@ async def emitir_por_planilha():
             )
 
             continue
-        
+
         resultado = await emitir_com_retry(item["documento"])
 
         registros.append(resultado)
 
         if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
-            
+
             minutos_pausa = TEMPO_PAUSA_BLOQUEIO // 60
 
             log_alerta(MSG_BLOQUEIO_DETECTADO_LOTE)
@@ -162,8 +165,9 @@ async def emitir_por_planilha():
 
     return registros
 
+
 async def emitir_documento_manual(documento):
-    
+
     documento = limpar_documento(documento)
 
     if not validar_documento(documento):
@@ -180,7 +184,7 @@ async def emitir_documento_manual(documento):
         salvar_historico([resultado])
 
         return resultado
-    
+
     resultado = await emitir_com_retry(documento)
 
     if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:

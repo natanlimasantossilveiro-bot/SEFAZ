@@ -19,6 +19,7 @@ from src.mensagens import (
     MSG_DESTINO_ARQUIVO,
     MSG_PDF_COPIADO_FALLBACK_SUCESSO,
     MSG_PDF_COPIADO_SUCESSO,
+    MSG_PDF_FALHA_MOVE_E_COPIA,
 )
 
 from src.config import (
@@ -28,12 +29,14 @@ from src.config import (
 
 PASTA_DOWNLOADS = os.path.join(os.path.expanduser("~"), "Downloads")
 
+
 def arquivo_esta_pronto(caminho_arquivo):
     tamanho_inicial = os.path.getsize(caminho_arquivo)
     time.sleep(TEMPO_ESPERA_PDF)
     tamanho_final = os.path.getsize(caminho_arquivo)
 
     return tamanho_inicial == tamanho_final
+
 
 def mover_pdf_mais_recente(documento):
 
@@ -62,12 +65,20 @@ def mover_pdf_mais_recente(documento):
     for tentativa in range(1, TOTAL_TENTATIVAS_PDF + 1):
         try:
             if not os.path.exists(pdf_mais_recente):
-                log_alerta(MSG_PDF_NAO_DISPONIVEL_TENTATIVA.format(tentativa=tentativa, total=TOTAL_TENTATIVAS_PDF))
+                log_alerta(
+                    MSG_PDF_NAO_DISPONIVEL_TENTATIVA.format(
+                        tentativa=tentativa, total=TOTAL_TENTATIVAS_PDF
+                    )
+                )
                 time.sleep(TEMPO_ESPERA_PDF)
                 continue
 
             if not arquivo_esta_pronto(pdf_mais_recente):
-                log_alerta(MSG_PDF_AINDA_BAIXANDO_TENTATIVA.format(tentativa=tentativa, total=TOTAL_TENTATIVAS_PDF))
+                log_alerta(
+                    MSG_PDF_AINDA_BAIXANDO_TENTATIVA.format(
+                        tentativa=tentativa, total=TOTAL_TENTATIVAS_PDF
+                    )
+                )
                 time.sleep(TEMPO_ESPERA_PDF)
                 continue
 
@@ -75,7 +86,11 @@ def mover_pdf_mais_recente(documento):
             break
 
         except PermissionError:
-            log_alerta(MSG_PDF_EM_USO_TENTATIVA.format(tentativa=tentativa, total=TOTAL_TENTATIVAS_PDF))
+            log_alerta(
+                MSG_PDF_EM_USO_TENTATIVA.format(
+                    tentativa=tentativa, total=TOTAL_TENTATIVAS_PDF
+                )
+            )
             time.sleep(TEMPO_ESPERA_PDF)
 
     else:
@@ -85,7 +100,7 @@ def mover_pdf_mais_recente(documento):
             log_alerta(MSG_PDF_COPIADO_FALLBACK_SUCESSO)
         except PermissionError:
             raise PermissionError(
-                f"Não foi possível mover nem copiar o PDF após várias tentativas: {pdf_mais_recente}"
+                MSG_PDF_FALHA_MOVE_E_COPIA.format(pdf=pdf_mais_recente)
             )
 
     if pdf_foi_copiado:

@@ -21,6 +21,7 @@ MSG_GERANDO_RELATORIO_CONSOLIDADO = "Gerando relatório consolidado..."
 MSG_TENTATIVA_EMISSAO_DOCUMENTO = "Tentativa {tentativa}/{total_tentativas} para o documento {documento}"
 MSG_FALHA_APOS_TENTATIVAS = "Falha após {total_tentativas} tentativas."
 MSG_ERRO_TENTATIVA_EMISSAO = "Erro na tentativa {tentativa} para o documento {documento}"
+MSG_PROCESSANDO_DOCUMENTO = "\nProcessando documento: {documento}"
 
 # Terminal
 MSG_SISTEMA_ENCERRADO = "Sistema encerrado."
@@ -65,3 +66,6 @@ MSG_PDF_EM_USO_TENTATIVA = "PDF ainda está em uso. Tentativa {tentativa}/{total
 MSG_DESTINO_ARQUIVO = "Destino: {destino}"
 MSG_PDF_COPIADO_FALLBACK_SUCESSO = "PDF não pôde ser movido, mas foi copiado com sucesso."
 MSG_PDF_COPIADO_SUCESSO = "PDF copiado com sucesso!"
+MSG_PDF_FALHA_MOVE_E_COPIA = (
+    "Não foi possível mover nem copiar o PDF após várias tentativas: {pdf}"
+)
