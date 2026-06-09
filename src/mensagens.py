@@ -15,6 +15,7 @@ MSG_ERRO_INESPERADO_EMISSAO = "Ocorreu um erro inesperado durante a emissão."
 MSG_RESULTADO_INDEFINIDO = "Não foi possível identificar o resultado da emissão."
 MSG_CERTIDAO_ENCONTRADA = "Certidão encontrada para o documento informado."
 MSG_EVIDENCIA_SALVA_SUCESSO = "Evidência salva com sucesso!"
+MSG_CAMINHO_EVIDENCIA = "Caminho: {caminho}"
 MSG_PDF_NAO_ENCONTRADO = "Nenhum PDF encontrado na pasta Downloads."
 MSG_PDF_MOVIDO_SUCESSO = "PDF movido com sucesso!"
 MSG_GERANDO_RELATORIO_CONSOLIDADO = "Gerando relatório consolidado..."
@@ -22,6 +23,10 @@ MSG_TENTATIVA_EMISSAO_DOCUMENTO = "Tentativa {tentativa}/{total_tentativas} para
 MSG_FALHA_APOS_TENTATIVAS = "Falha após {total_tentativas} tentativas."
 MSG_ERRO_TENTATIVA_EMISSAO = "Erro na tentativa {tentativa} para o documento {documento}"
 MSG_PROCESSANDO_DOCUMENTO = "\nProcessando documento: {documento}"
+
+# Relatório
+MSG_RELATORIO_GERADO_SUCESSO = "Relatório gerado com sucesso!"
+MSG_CAMINHO_RELATORIO = "Caminho: {caminho}"
 
 # Terminal
 MSG_SISTEMA_ENCERRADO = "Sistema encerrado."

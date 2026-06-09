@@ -8,6 +8,11 @@ from src.utils import (
 
 from src.paths import PASTA_RELATORIOS
 
+from src.mensagens import (
+    MSG_RELATORIO_GERADO_SUCESSO,
+    MSG_CAMINHO_RELATORIO,
+    )
+
 def gerar_relatorio_emissao(registros):
 
     os.makedirs(PASTA_RELATORIOS, exist_ok=True)
@@ -39,7 +44,7 @@ def gerar_relatorio_emissao(registros):
 
         escritor.writerows(registros)
 
-    log_sucesso("Relatório gerado com sucesso!")
-    log_sucesso(f"Caminho: {caminho_relatorio}")
+    log_sucesso(MSG_RELATORIO_GERADO_SUCESSO)
+    log_sucesso(MSG_CAMINHO_RELATORIO.format(caminho=caminho_relatorio))
 
-    return caminho_relatorio    
+    return caminho_relatorio
