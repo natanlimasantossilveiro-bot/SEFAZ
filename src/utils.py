@@ -2,6 +2,7 @@ import os
 import re
 
 from datetime import datetime
+
 from src.config import DEBUG
 
 from src.paths import (
@@ -19,6 +20,7 @@ from src.logger_service import (
     registrar_alerta,
     registrar_erro,
 )
+
 
 def agora_formatado():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")

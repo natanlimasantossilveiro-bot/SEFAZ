@@ -4,7 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-URL_SEFAZ = "https://cdwfazenda.paas.pr.gov.br/cdwportal/certidao/automatica"
+URL_SEFAZ = os.getenv(
+    "URL_SEFAZ",
+    "https://cdwfazenda.paas.pr.gov.br/cdwportal/certidao/automatica"
+)
 
 TIMEOUT_EMISSAO = int(os.getenv("TIMEOUT_EMISSAO", 60))
 
