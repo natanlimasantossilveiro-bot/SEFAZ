@@ -19,4 +19,7 @@ OPCOES_MENU = [
 ]
 
 
-OPCOES_VALIDAS_MENU = [opcao[0] for opcao in OPCOES_MENU]
+OPCOES_VALIDAS_MENU = [
+    codigo
+    for codigo, _ in OPCOES_MENU
+]
