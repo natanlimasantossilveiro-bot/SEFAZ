@@ -15,6 +15,18 @@ from src.mensagens import (
     MSG_NENHUM_REGISTRO_ENCONTRADO,
     MSG_TITULO_HISTORICO,
     MSG_TITULO_RESUMO,
+    MSG_FILTRO_DOCUMENTO_HISTORICO,
+    MSG_TOTAL_REGISTROS,
+    MSG_TOTAL_SUCESSOS,
+    MSG_TOTAL_ERROS_EXECUCAO,
+    MSG_TOTAL_BLOQUEIOS,
+    MSG_TOTAL_DOCUMENTOS_INVALIDOS,
+    MSG_TOTAL_RESULTADOS_INDEFINIDOS,
+    MSG_QUANTIDADE_REGISTROS_VISUALIZAR,
+    MSG_EXPORTAR_HISTORICO_CSV,
+    MSG_REGISTRO_HISTORICO,
+    MSG_CAMINHO_PDF_HISTORICO,
+    MSG_CAMINHO_EVIDENCIA_HISTORICO,
 )
 
 from src.input_validator import (
@@ -22,20 +34,30 @@ from src.input_validator import (
     entrada_confirmada,
 )
 
+
 def exibir_registros_historico(registros):
     for registro in registros:
         exibir_mensagem(
-            f"\n{registro['data_hora']} | "
-            f"{registro['documento']} | "
-            f"{registro['status']} | "
-            f"{registro['mensagem']}"
+            MSG_REGISTRO_HISTORICO.format(
+                data_hora=registro["data_hora"],
+                documento=registro["documento"],
+                status=registro["status"],
+                mensagem=registro["mensagem"],
+            )
         )
 
         if registro.get("caminho_pdf"):
-            exibir_mensagem(f"PDF: {registro['caminho_pdf']}")
+            exibir_mensagem(
+                MSG_CAMINHO_PDF_HISTORICO.format(caminho_pdf=registro["caminho_pdf"])
+            )
 
         if registro.get("caminho_evidencia"):
-            exibir_mensagem(f"Evidência: {registro['caminho_evidencia']}")
+            exibir_mensagem(
+                MSG_CAMINHO_EVIDENCIA_HISTORICO.format(
+                    caminho_evidencia=registro["caminho_evidencia"]
+                )
+            )
+
 
 def consultar_historico():
 
@@ -48,7 +70,7 @@ def consultar_historico():
         return
     
     filtro_documento = solicitar_entrada(
-        "Filtrar por CPF/CNPJ (ENTER para todos): "
+        MSG_FILTRO_DOCUMENTO_HISTORICO
     )
 
     if filtro_documento.strip():
@@ -57,15 +79,19 @@ def consultar_historico():
     estatisticas = gerar_estatisticas_historico(historico)
 
     exibir_titulo(MSG_TITULO_RESUMO)
-    exibir_mensagem(f"Total de registros: {estatisticas['total']}")
-    exibir_mensagem(f"Sucessos: {estatisticas['sucesso']}")
-    exibir_mensagem(f"Erros de execução: {estatisticas['erro_execucao']}")
-    exibir_mensagem(f"Bloqueios: {estatisticas['bloqueio_automacao']}")
-    exibir_mensagem(f"Documentos inválidos: {estatisticas['documento_invalido']}")
-    exibir_mensagem(f"Resultados indefinidos: {estatisticas['resultado_indefinido']}")
+    exibir_mensagem(MSG_TOTAL_REGISTROS.format(total=estatisticas["total"]))
+    exibir_mensagem(MSG_TOTAL_SUCESSOS.format(total=estatisticas["sucesso"]))
+    exibir_mensagem(MSG_TOTAL_ERROS_EXECUCAO.format(total=estatisticas["erro_execucao"]))
+    exibir_mensagem(MSG_TOTAL_BLOQUEIOS.format(total=estatisticas["bloqueio_automacao"]))
+    exibir_mensagem(
+        MSG_TOTAL_DOCUMENTOS_INVALIDOS.format(total=estatisticas["documento_invalido"])
+    )
+    exibir_mensagem(
+        MSG_TOTAL_RESULTADOS_INDEFINIDOS.format(total=estatisticas["resultado_indefinido"])
+    )
 
     quantidade_texto = solicitar_entrada(
-        "\nQuantos registros deseja visualizar? (padrão 10): "
+        MSG_QUANTIDADE_REGISTROS_VISUALIZAR
     )
 
     quantidade = 10
@@ -76,7 +102,7 @@ def consultar_historico():
     exibir_registros_historico(historico[-quantidade:])
 
     exportar = solicitar_entrada(
-        "\nDeseja exportar este histórico para CSV? (s/n): "
+        MSG_EXPORTAR_HISTORICO_CSV
     )
 
     if entrada_confirmada(exportar):

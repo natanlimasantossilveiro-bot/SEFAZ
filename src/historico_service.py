@@ -18,7 +18,15 @@ from src.status import (
     STATUS_RESULTADO_INDEFINIDO,
 )
 
+from src.mensagens import (
+    MSG_HISTORICO_ATUALIZADO_SUCESSO,
+    MSG_HISTORICO_NAO_ENCONTRADO,
+    MSG_HISTORICO_EXPORTADO_SUCESSO,
+    MSG_CAMINHO_RELATORIO,
+)
+
 CAMINHO_HISTORICO = os.path.join(PASTA_HISTORICO, "historico_emissoes.csv")
+
 
 def salvar_historico(registros):
     os.makedirs(PASTA_HISTORICO, exist_ok=True)
@@ -38,7 +46,7 @@ def salvar_historico(registros):
         escritor = csv.DictWriter(
             arquivo_csv,
             fieldnames=colunas,
-            delimiter=";"
+            delimiter=";",
         )
 
         if not arquivo_existe:
@@ -56,11 +64,12 @@ def salvar_historico(registros):
 
             escritor.writerow(linha)
 
-    log_sucesso("Histórico atualizado com sucesso!")
+    log_sucesso(MSG_HISTORICO_ATUALIZADO_SUCESSO)
+
 
 def listar_historico():
     if not os.path.exists(CAMINHO_HISTORICO):
-        log_info("Nenhum histórico encontrado.")
+        log_info(MSG_HISTORICO_NAO_ENCONTRADO)
         return []
     
     registros = []
@@ -68,13 +77,14 @@ def listar_historico():
     with open(CAMINHO_HISTORICO, "r", newline="", encoding="utf-8-sig") as arquivo_csv:
         leitor = csv.DictReader(
             arquivo_csv,
-            delimiter=";"
+            delimiter=";",
         )
 
         for linha in leitor:
             registros.append(linha)
 
     return registros
+
 
 def filtrar_historico_por_documento(documento):
     documento_limpo = limpar_documento(documento)
@@ -89,10 +99,12 @@ def filtrar_historico_por_documento(documento):
 
     return registros_filtrados
 
+
 def exportar_historico_filtrado(registros):
     os.makedirs(PASTA_RELATORIOS, exist_ok=True)
 
-    nome_arquivo = f"historico_filtrado_{agora_formatado().replace(':', '_').replace(' ', '_')}.csv"
+    data_nome_arquivo = agora_formatado().replace(":", "-").replace(" ", "_")
+    nome_arquivo = f"historico_filtrado_{data_nome_arquivo}.csv"
 
     caminho_relatorio = os.path.join(PASTA_RELATORIOS, nome_arquivo)
 
@@ -109,16 +121,17 @@ def exportar_historico_filtrado(registros):
         escritor = csv.DictWriter(
             arquivo_csv,
             fieldnames=colunas,
-            delimiter=";"
+            delimiter=";",
         )
 
         escritor.writeheader()
         escritor.writerows(registros)
 
-    log_sucesso("Histórico filtrado exportado com sucesso!")
-    log_sucesso(f"Caminho: {caminho_relatorio}")
+    log_sucesso(MSG_HISTORICO_EXPORTADO_SUCESSO)
+    log_sucesso(MSG_CAMINHO_RELATORIO.format(caminho=caminho_relatorio))
 
     return caminho_relatorio
+
 
 def gerar_estatisticas_historico(registros):
 
