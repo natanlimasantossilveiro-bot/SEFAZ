@@ -2,6 +2,7 @@ import csv
 import os
 
 from openpyxl import Workbook
+from openpyxl.styles import Font
 
 from src.utils import (
     agora_para_nome_arquivo,
@@ -54,6 +55,11 @@ def gerar_relatorio_emissao(registros):
 
     planilha.append(colunas)
 
+    for celula in planilha[1]:
+        celula.font = Font(bold=True)
+
+    planilha.freeze_panes = "A2"
+
     for registro in registros:
         planilha.append([
             registro.get("documento"),
@@ -62,6 +68,18 @@ def gerar_relatorio_emissao(registros):
             registro.get("caminho_pdf"),
             registro.get("caminho_evidencia"),
         ])
+
+    planilha.auto_filter.ref = planilha.dimensions
+    
+    for coluna in planilha.columns:
+        maior_tamanho = 0
+        letra_coluna = coluna[0].column_letter
+        
+        for celula in coluna:
+            if celula.value:
+                maior_tamanho = max(maior_tamanho, len(str(celula.value)))
+
+        planilha.column_dimensions[letra_coluna].width = maior_tamanho + 2
 
     caminho_excel = caminho_relatorio.replace(".csv", ".xlsx")
 
