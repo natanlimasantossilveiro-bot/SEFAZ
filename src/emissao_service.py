@@ -188,8 +188,10 @@ async def emitir_documento_manual(documento):
     resultado = await emitir_com_retry(documento)
 
     if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
-        log_alerta(MSG_BLOQUEIO_CONSULTAS)
-        log_alerta(MSG_RECOMENDACAO_AGUARDAR)
+        log_alerta(MSG_BLOQUEIO_DETECTADO_RETRY)
+        return resultado
+    
+    return resultado
 
     gerar_relatorio_emissao([resultado])
 
