@@ -1,6 +1,8 @@
 import csv
 import os
 
+from openpyxl import Workbook
+
 from src.utils import (
     agora_para_nome_arquivo,
     log_sucesso,
@@ -11,7 +13,8 @@ from src.paths import PASTA_RELATORIOS
 from src.mensagens import (
     MSG_RELATORIO_GERADO_SUCESSO,
     MSG_CAMINHO_RELATORIO,
-    )
+)
+
 
 def gerar_relatorio_emissao(registros):
 
@@ -21,7 +24,7 @@ def gerar_relatorio_emissao(registros):
 
     caminho_relatorio = os.path.join(
         PASTA_RELATORIOS,
-        nome_arquivo
+        nome_arquivo,
     )
 
     colunas = [
@@ -37,14 +40,44 @@ def gerar_relatorio_emissao(registros):
         escritor = csv.DictWriter(
             arquivo_csv,
             fieldnames=colunas,
-            delimiter=";"
+            delimiter=";",
         )
 
         escritor.writeheader()
 
         escritor.writerows(registros)
 
+    workbook = Workbook()
+
+    planilha = workbook.active
+    planilha.title = "Emissão SEFAZ"
+
+    planilha.append(colunas)
+
+    for registro in registros:
+        planilha.append([
+            registro.get("documento"),
+            registro.get("status"),
+            registro.get("mensagem"),
+            registro.get("caminho_pdf"),
+            registro.get("caminho_evidencia"),
+        ])
+
+    caminho_excel = caminho_relatorio.replace(".csv", ".xlsx")
+
+    workbook.save(caminho_excel)
+
     log_sucesso(MSG_RELATORIO_GERADO_SUCESSO)
-    log_sucesso(MSG_CAMINHO_RELATORIO.format(caminho=caminho_relatorio))
+    log_sucesso(
+        MSG_CAMINHO_RELATORIO.format(
+            caminho=caminho_relatorio
+        )
+    )
+
+    log_sucesso(
+        MSG_CAMINHO_RELATORIO.format(
+            caminho=caminho_excel
+        )
+    )
 
     return caminho_relatorio
