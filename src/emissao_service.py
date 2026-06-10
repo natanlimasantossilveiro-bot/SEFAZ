@@ -144,12 +144,10 @@ async def emitir_por_planilha():
 
         if resultado["status"] == STATUS_BLOQUEIO_AUTOMACAO:
 
-            minutos_pausa = TEMPO_PAUSA_BLOQUEIO // 60
-
             log_alerta(MSG_BLOQUEIO_DETECTADO_LOTE)
-            log_alerta(MSG_PAUSA_BLOQUEIO.format(minutos=minutos_pausa))
+            log_alerta(MSG_RECOMENDACAO_AGUARDAR)
 
-            await asyncio.sleep(TEMPO_PAUSA_BLOQUEIO)
+            break
 
         tempo_espera = random.randint(TEMPO_ESPERA_MINIMO, TEMPO_ESPERA_MAXIMO)
 
