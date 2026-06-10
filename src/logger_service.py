@@ -1,14 +1,18 @@
 import logging
 import os
 
+from datetime import datetime
+
 PASTA_LOGS = "logs"
 
 os.makedirs(PASTA_LOGS, exist_ok=True)
 
+NOME_LOG = f"sefaz_{datetime.now().strftime('%Y%m%d')}.log"
+
 logging.basicConfig(
-    filename=os.path.join(PASTA_LOGS, "app.log"),
+    filename=os.path.join(PASTA_LOGS, NOME_LOG),
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
+    format="%(asctime)s - %(levelname)s - %(message)s",
     encoding="utf-8",
 )
 
