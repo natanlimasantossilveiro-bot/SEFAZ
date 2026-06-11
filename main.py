@@ -8,8 +8,11 @@ from src.app_service import (
     abrir_pasta_certidoes,
     abrir_pasta_relatorios,
     abrir_pasta_evidencias,
+    abrir_pasta_logs,
 )
+
 from src.menu_service import exibir_menu
+
 from src.utils import criar_pastas_necessarias, log_sucesso, log_erro
 
 from src.mensagens import (
@@ -58,6 +61,10 @@ async def main():
             abrir_pasta_evidencias()
 
         elif opcao == "7":
+
+            abrir_pasta_logs()
+
+        elif opcao == "8":
 
             log_sucesso(MSG_SISTEMA_ENCERRADO)
             break

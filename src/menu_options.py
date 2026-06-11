@@ -5,6 +5,7 @@ from src.mensagens import (
     MSG_MENU_ABRIR_PDFS,
     MSG_MENU_ABRIR_RELATORIOS,
     MSG_MENU_ABRIR_EVIDENCIAS,
+    MSG_MENU_ABRIR_LOGS,
     MSG_MENU_SAIR,
 )
 
@@ -15,7 +16,8 @@ OPCOES_MENU = [
     ("4", MSG_MENU_ABRIR_PDFS),
     ("5", MSG_MENU_ABRIR_RELATORIOS),
     ("6", MSG_MENU_ABRIR_EVIDENCIAS),
-    ("7", MSG_MENU_SAIR),
+    ("7", MSG_MENU_ABRIR_LOGS),
+    ("8", MSG_MENU_SAIR),
 ]
 
 

@@ -9,6 +9,7 @@ from src.historico_view_service import consultar_historico
 
 from src.paths import (
     PASTA_CERTIDOES_EMITIDAS,
+    PASTA_LOGS,
     PASTA_RELATORIOS,
     PASTA_EVIDENCIAS,
 )
@@ -63,3 +64,7 @@ def abrir_pasta_relatorios():
 
 def abrir_pasta_evidencias():
     os.startfile(PASTA_EVIDENCIAS)
+
+
+def abrir_pasta_logs():
+    os.startfile(PASTA_LOGS)

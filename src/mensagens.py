@@ -65,6 +65,7 @@ MSG_MENU_ABRIR_EVIDENCIAS = "Abrir pasta de evidências"
 MSG_MENU_SAIR = "Sair"
 MSG_ITEM_MENU = "{codigo}- {descricao}"
 MSG_SOLICITAR_OPCAO_MENU = "\nEscolha uma opção: "
+MSG_MENU_ABRIR_LOGS = "Abrir pasta de logs"
 
 # PDF
 MSG_PDF_NAO_DISPONIVEL_TENTATIVA = "PDF ainda não está disponível. Tentativa {tentativa}/{total}..."
